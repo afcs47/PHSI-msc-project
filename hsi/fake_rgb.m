@@ -8,7 +8,7 @@ function [R, G, B] = fake_rgb(showRGB, HS_calibrated, datasetname)
     
     if showRGB
         % Display the calibrated data as a pseudo-RGB image
-        figure();
+        figure('Name', ['Pseudo-RGB for' datasetname]);
         imshow(HS_calibrated(:,:,[R, G, B]),[]);
         title(['Pseudo-RGB for' datasetname]);
     end 
