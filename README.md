@@ -9,5 +9,6 @@ MATLAB code and results for Master's project on Polarization Hyperspectral Imagi
 - 'pol results+figures/' - Contains saved polarization figures and processed data .m files.
 - 'hsi results+figures/' - Contains saved hsi figures and processed data .m files.
 - 'MAIN_example_hs_load_adapted2phsi.m' - Main script to run **HSI and polarization analysis** on data from the hyperspectral imaging system.
+  - 'MAIN_example_hs_load_adapted2phsi_load_figures.m' - Loads data previously saved in .mat files and plots the respective DoLP and AoLP figures (avoiding the >1h long computation time).
 - 'MAIN_pol_analysis.m' - Main script to run **polarization-only analysis** on data from the polarization camera.
 - 'MAIN_phsi.m' - Final script to **fuse HSI and polarization results**, after calibrating the HSI and polarization camera by an homographic transformation matrix.
