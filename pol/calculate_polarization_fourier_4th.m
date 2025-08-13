@@ -1,4 +1,4 @@
-function [DoLP, AoLP] = calculate_polarization_fourier_4th(polar_images, datasetname) % outputs DoLP, AoLP, computed from 4th order Fourier model from the inputed polar_images demosaiced polarization stack
+function [DoLP, AoLP] = calculate_polarization_fourier_4th(polar_images, datasetname, outputFolder) % outputs DoLP, AoLP, computed from 4th order Fourier model from the inputed polar_images demosaiced polarization stack
     % Define the known polarization angles (in degrees) used for capturing the images
     angles_deg = [0, 45, 90, 135];
 
@@ -33,5 +33,5 @@ function [DoLP, AoLP] = calculate_polarization_fourier_4th(polar_images, dataset
         DoLP(:,:,c) = reshape(dolp, H, W);
         AoLP(:,:,c) = reshape(aolp, H, W);
     end
-        plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, datasetname, 'Fourier 4th');
+        plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, datasetname, 'Fourier 4th', outputFolder);
 end

@@ -7,7 +7,7 @@ intensities and we use those to calculate DoLP and AoLP for each pixel
 @Z - raw image to use for processing
 %}
 
-function [DoLP, AoLP] = calculate_polarization(pol_90, pol_45, pol_135, pol_0, datasetname) % Standard Stokes parameters calculation - switch input variables to individual polarization images to avoid repeated computation; DoLP computed in an alternative way 
+function [DoLP, AoLP] = calculate_polarization(pol_90, pol_45, pol_135, pol_0, datasetname, outputFolder) % Standard Stokes parameters calculation - switch input variables to individual polarization images to avoid repeated computation; DoLP computed in an alternative way 
     % demosaic each polarization separately
     color_90 = demosaic(uint8(pol_90), 'rggb');
     color_45 = demosaic(uint8(pol_45), 'rggb');
@@ -49,5 +49,5 @@ function [DoLP, AoLP] = calculate_polarization(pol_90, pol_45, pol_135, pol_0, d
         AoLP(:,:,c) = 0.5 * atan2(S2, S1);
     end
 
-    plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoLP, datasetname, 'Standard');
+    plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoLP, datasetname, 'Standard', outputFolder);
 end

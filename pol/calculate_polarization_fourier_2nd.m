@@ -1,4 +1,4 @@
-function [DoLP, AoLP] = calculate_polarization_fourier_2nd(polar_images, datasetname) % outputs DoLP, AoLP, computed from 2nd order Fourier model from the inputed polar_images demosaiced polarization stack
+function [DoLP, AoLP] = calculate_polarization_fourier_2nd(polar_images, datasetname, outputFolder) % outputs DoLP, AoLP, computed from 2nd order Fourier model from the inputed polar_images demosaiced polarization stack
     % Define angles used in the camera
     angles_deg = [0, 45, 90, 135];
 
@@ -33,5 +33,5 @@ function [DoLP, AoLP] = calculate_polarization_fourier_2nd(polar_images, dataset
 
     end
 
-    plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, datasetname, 'Fourier 2nd');
+    plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, datasetname, 'Fourier 2nd', outputFolder);
 end
