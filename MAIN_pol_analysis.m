@@ -77,7 +77,7 @@ title("Demosaiced image")
 
 [proc_90, proc_45, proc_135, proc_0] = demosaic_polarization_image(Z, inputFile, outputFolder, show, save); % uses  "Z(1:2:end, 1:2:end)" instead of "blockproc(Z, [2 2], @(block) block.data(1,1))" (used in show_polarization.m)
 
-[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0, filename); % DoLP and AoLP from Standard Stokes parameters computation 
+[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0, filename, outputFolder); % DoLP and AoLP from Standard Stokes parameters computation 
 
 visualize_polarization(DoLP, AoLP, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, 'Standard');
 
@@ -88,11 +88,11 @@ visualize_polarization(DoLP, AoLP, inputFile, outputFolder, angle_min, angle_max
 polar_images = cat(4, demosaic(uint8(proc_0), 'rggb'), demosaic(uint8(proc_45), 'rggb'), demosaic(uint8(proc_90), 'rggb'),demosaic(uint8(proc_135), 'rggb'));
 
 % Compute 2nd-order
-[DoLP_2nd, AoLP_2nd] = calculate_polarization_fourier_2nd(polar_images, filename);
+[DoLP_2nd, AoLP_2nd] = calculate_polarization_fourier_2nd(polar_images, filename, outputFolder);
 visualize_polarization(DoLP_2nd, AoLP_2nd, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, '2nd Order Fourier');
 
 % Compute 4th-order
-[DoLP_4th, AoLP_4th] = calculate_polarization_fourier_4th(polar_images, filename);
+[DoLP_4th, AoLP_4th] = calculate_polarization_fourier_4th(polar_images, filename, outputFolder);
 visualize_polarization(DoLP_4th, AoLP_4th, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, '4th Order Fourier');
 
 
