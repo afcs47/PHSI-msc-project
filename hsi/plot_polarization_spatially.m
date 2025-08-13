@@ -1,5 +1,5 @@
 
-function plot_polarization_spatially(data, colormap_name, titleText)   
+function plot_polarization_spatially(data, colormap_name, titleText, outputFolder)   
     % Compute common color scale limits
     %Lim = [min(data(:)), max(data(:))]/max(data(:)); 
     if contains(titleText, 'DoLP')
@@ -17,6 +17,6 @@ function plot_polarization_spatially(data, colormap_name, titleText)
     axis image; % Ensure square pixels
     clim(Lim); % Set a common color scale
 
-    export_figure(fig, [strrep(titleText, ' ', '_')], 'figures');
+    export_figure(fig, [strrep(titleText, ' ', '_')], outputFolder);
 
 end

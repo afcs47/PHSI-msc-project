@@ -19,7 +19,6 @@ function [S0, S1, S2, DoLP_img, AoP_img] = compute_spie_simplified(I_theta)
     DoLP_img = reshape(DoLP, rows, cols);
     AoP_img = reshape(AoP_deg, rows, cols);
 
-
     S0 = reshape(F0, rows, cols);
     S1 = reshape(real(F2), rows, cols);
     S2 = reshape(imag(F2), rows, cols);

@@ -1,4 +1,4 @@
-function plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoP_deg, datasetname, method)
+function plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoP_deg, datasetname, method, outputFolder)
     % Plot Results: S0, S1, S2, DoLP and AoLP (grayscale)
 
     titleText = [method, ' Polarization Parameters Comparison for ', datasetname];
@@ -26,5 +26,6 @@ function plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoP_deg, datasetname, 
     subplot(3,2,6);
     imshow(bw_AoLP_smooth); title('Smoothed BW AoP (Degrees)');
 
-    export_figure(fig, [strrep(titleText, ' ', '_')], 'figures')
+    export_figure(fig, [strrep(titleText, ' ', '_')], outputFolder);
+
 end
