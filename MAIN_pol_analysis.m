@@ -1,6 +1,6 @@
 %show_polarization.m/polarimetry.m + dark calibration + DoLP/AoLP(standard) + DoLP/AoLP (fourier series fit) + Methods comparison
 
-clc; clear all; %close all;
+clc; clear all; close all;
 
 addpath(fullfile(fileparts(mfilename('fullpath')), 'pol')); % Get auxiliary matlab functions previously created for polarization data analysis
 
@@ -76,7 +76,8 @@ imshow(J)
 title("Demosaiced image")
 
 [proc_90, proc_45, proc_135, proc_0] = demosaic_polarization_image(Z, inputFile, outputFolder, show, save); % uses  "Z(1:2:end, 1:2:end)" instead of "blockproc(Z, [2 2], @(block) block.data(1,1))" (used in show_polarization.m)
-[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0); % DoLP and AoLP from Standard Stokes parameters computation 
+
+[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0, filename); % DoLP and AoLP from Standard Stokes parameters computation 
 
 visualize_polarization(DoLP, AoLP, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, 'Standard');
 
@@ -87,11 +88,11 @@ visualize_polarization(DoLP, AoLP, inputFile, outputFolder, angle_min, angle_max
 polar_images = cat(4, demosaic(uint8(proc_0), 'rggb'), demosaic(uint8(proc_45), 'rggb'), demosaic(uint8(proc_90), 'rggb'),demosaic(uint8(proc_135), 'rggb'));
 
 % Compute 2nd-order
-[DoLP_2nd, AoLP_2nd] = calculate_polarization_fourier_2nd(polar_images);
+[DoLP_2nd, AoLP_2nd] = calculate_polarization_fourier_2nd(polar_images, filename);
 visualize_polarization(DoLP_2nd, AoLP_2nd, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, '2nd Order Fourier');
 
-%% Compute 4th-order
-[DoLP_4th, AoLP_4th] = calculate_polarization_fourier_4th(polar_images);
+% Compute 4th-order
+[DoLP_4th, AoLP_4th] = calculate_polarization_fourier_4th(polar_images, filename);
 visualize_polarization(DoLP_4th, AoLP_4th, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, '4th Order Fourier');
 
 
@@ -115,7 +116,7 @@ fprintf('\n4th Order Fourier: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(mean_Do
 % DoLP Comparison
 compare_methods_DoLP(mean_DoLP_stokes, 'Standard', mean_DoLP2, 'Fourier 2nd', mean_DoLP4, 'Fourier 4th');
 
-%% AoLP Comparison
+% AoLP Comparison
 compare_methods_AoLP(mean_AoLP_stokes, 'Standard', mean_AoLP2, 'Fourier 2nd', mean_AoLP4, 'Fourier 4th', angle_min, angle_max)
 
 %% BW plot
