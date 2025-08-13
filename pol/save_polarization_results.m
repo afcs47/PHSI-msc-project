@@ -18,5 +18,22 @@ function save_polarization_results(outputFolder, base_name,  DoLP, AoLP, DoLP_2n
     rgb_AoLP = map_aolp_to_rgb(mod(mean(AoLP_2nd,3), pi), 0, 180);
     imwrite(rgb_AoLP, fullfile(outputFolder, [base_name '_AoLP_2nd_rgb.png']));
 
+
+    % Save currently open figures that are not already saved in the folder
+    figHandles = findall(0, 'Type', 'figure');
+    for i = 1:numel(figHandles)
+        figName = get(figHandles(i), 'Name');
+        if isempty(figName)
+            figName = sprintf('Figure_%d', figHandles(i).Number);
+        end
+        figFileName = [figName '.png'];
+        figPath = fullfile(outputFolder, figFileName);
+        if ~isfile(figPath)
+            saveas(figHandles(i), figPath);
+            fprintf('Saved figure: %s\n', figPath);
+        else
+            fprintf('Figure already saved, skipping: %s\n', figFileName);
+        end
+    end
     fprintf('All results saved to: %s\n', outputFolder);
 end
