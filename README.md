@@ -6,8 +6,8 @@ MATLAB code and results for Master's project on Polarization Hyperspectral Imagi
 - 'hsi/'  Contains code for **hyperspectral imaging analysis**, based on https://drive.google.com/drive/folders/1OmyS4ESn0ryNYrc_qjWoNNmOyTwHn_yj?usp=drive_link 
 - 'pol/' - Contains code for **polarization imaging analysis**, based on https://github.com/benesprk/bc_project/tree/main
 - 'pol_peanuts/' - Unrelated to the other codes, studies polarization states through Fourier analysis obtained with rotating QWP and polarizers, in a study similar to https://physlab.org/experiment/polarization-peanuts-with-fourier-analysis/
-- 'pol results+figures/' - Contains saved polarization figures and processed data .m files.
-- 'hsi results+figures/' - Contains saved hsi figures and processed data .m files.
+- 'pol results+figures/' - Contains saved polarization figures and processed data .mat files.
+- 'hsi results+figures/' - Contains saved hsi figures and processed data .mat files.
 - 'MAIN_example_hs_load_adapted2phsi.m' - Main script to run **HSI and polarization analysis** on data from the hyperspectral imaging system.
   - 'MAIN_example_hs_load_adapted2phsi_load_figures.m' - Loads data previously saved in .mat files and plots the respective DoLP and AoLP figures (avoiding the >1h long computation time).
 - 'MAIN_pol_analysis.m' - Main script to run **polarization-only analysis** on data from the polarization camera.
