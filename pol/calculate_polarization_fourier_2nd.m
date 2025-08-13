@@ -27,9 +27,11 @@ function [DoLP, AoLP] = calculate_polarization_fourier_2nd(polar_images) % outpu
         dolp = sqrt(a2.^2 + b2.^2) ./ (a0 + eps); % avoid divide by zero
         aolp = 0.5 * atan2(b2, a2); % angle in radians
         
-        % Reshape back to [H, W]
+       % Reshape back to [H, W]
         DoLP(:,:,c) = reshape(dolp, H, W);
-        AoLP(:,:,c) = reshape(mod(aolp, pi), H, W); % wrap to [0, pi]
+        AoLP(:,:,c) = reshape(aolp, H, W); % still in radians
+
     end
-    plot_pol_parameters_comparison(a0, a1, a2, DoLP, AoLP, ' ', 'Fourier 2nd');
+
+    plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, ' ', 'Fourier 2nd');
 end
