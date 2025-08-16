@@ -153,7 +153,7 @@ plot_polarization_spatially(AoLP_wg, 'hsv', ['Standard Spatial Distribution of A
 if plotComparison; plot_pol_parameters_comparison(spatial_reflectances.('angle_0') + spatial_reflectances.('angle_90'), spatial_reflectances.('angle_0') - spatial_reflectances.('angle_90'), spatial_reflectances.('angle_45') - spatial_reflectances.('angle_135'), DoLP_wg, AoLP_wg, selectedType, 'Standard', outputFolder); end
 
 %% Save spatial DoLP/AoLP
-standard_data_struct = struct('Standard_DoLP_map', DoLP_wg, 'Standard_AoLP_map', AoLP_wg, 'Stokes_S0', spatial_reflectances.('angle_0') + spatial_reflectances.('angle_90'), 'Stokes_S1', spatial_reflectances.('angle_0') - spatial_reflectances.('angle_90'), 'Stokes_S2', spatial_reflectances.('angle_45') - spatial_reflectances.('angle_135'), 'wavelenghts', wavelengths);
+standard_data_struct = struct('Standard_DoLP_map', DoLP_wg, 'Standard_AoLP_map', AoLP_wg, 'Stokes_S0', spatial_reflectances.('angle_0') + spatial_reflectances.('angle_90'), 'Stokes_S1', spatial_reflectances.('angle_0') - spatial_reflectances.('angle_90'), 'Stokes_S2', spatial_reflectances.('angle_45') - spatial_reflectances.('angle_135'), 'wavelengths', wavelengths);
 
 % Save the full struct to file
 save_analysis_data(standard_data_struct, 'Standard_Stokes_Results', selectedType, outputFolder);
