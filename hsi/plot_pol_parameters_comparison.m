@@ -1,5 +1,7 @@
-function plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoP_deg, datasetname, method, outputFolder)
-    % Plot Results: S0, S1, S2, DoLP and AoLP (grayscale)
+function plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoP_deg, datasetname, method, outputFolder) % Plot Results: S0, S1, S2, DoLP and AoLP (grayscale)
+    % Average across color channels to allow for plotting
+    DoLP = mean(DoLP, 3); 
+    AoP_deg = mean(AoP_deg, 3);
 
     titleText = [method, ' Polarization Parameters Comparison for ', datasetname];
     % Stretch between 1st and 99th percentiles to brighten the image
