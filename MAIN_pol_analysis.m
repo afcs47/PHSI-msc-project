@@ -12,8 +12,8 @@ show_aolp = 1; % show only polarimetry (AoLP) image
 save_aolp = 1; % save only polarimetry (AoLP) image
 rotated_pol_camera = true; % Needed for future fusion with HSI data - change to 'false' for other cases
 
-outputFolder = uigetdir(pwd, 'Select Output Folder'); % Ask where to save results
-if outputFolder == 0
+outputFolderOG = uigetdir(pwd, 'Select Output Folder'); % Ask where to save results
+if outputFolderOG == 0
     disp('No output folder selected. Exiting.');
     return
 end
@@ -55,13 +55,13 @@ inputFile = fullfile(filePath, filename);
 % fprintf('File size: %d bytes\n', filesize);
 % filesize/(2048 * 2448) %= bytes per pixel
 
-% Create a subfolder based on the filename variable to save the data
-datasetFolder = fullfile(outputFolder, filename);
+% Create a subfolder on the OG folder based on the filename variable to save the data
+datasetFolder = fullfile(outputFolderOG, filename);
 % Create the folder if it doesn't exist
 if ~exist(datasetFolder, 'dir')
     mkdir(datasetFolder);
 end
-% Use datasetFolder as the new output directory
+% Use datasetFolder as the NEW output directory
 outputFolder = datasetFolder;
 
 
@@ -143,8 +143,8 @@ imshow(bw_AoLP);
 title('AoLP (2nd Order, BW)');
 
 %% Apply smoothing filter
-bw_DoLP_smooth = imgaussfilt(bw_DoLP, 2); % sigma = 2 (adjustable)
-bw_AoLP_smooth = imgaussfilt(bw_AoLP, 2); %too blurry
+%bw_DoLP_smooth = imgaussfilt(bw_DoLP, 2); % sigma = 2 (adjustable)
+%bw_AoLP_smooth = imgaussfilt(bw_AoLP, 2); %too blurry
 
 kernel = fspecial('average', [2 2]); % [5 5] a bit more blurry
 bw_DoLP_smooth = imfilter(bw_DoLP, kernel);
