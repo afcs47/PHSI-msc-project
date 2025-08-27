@@ -40,11 +40,9 @@ end
 mainDatasetName = sprintf('%s_%s', selectedType, selectedDay);
 
 %% Select methods
-hsiMethod = questdlg('Select HSI method:', 'Method Selection (HSI)', 'Standard', 'Fourier', 'SPIE Simplified', 'Standard');
+fusionChoice = questdlg('Select fusion setup:', 'Fusion Options', 'HSI with WG + POL', 'HSI without WG + POL', 'HSI with WG + POL');
 
 polMethod = questdlg('Select POL method:', 'Method Selection (POL)', 'Standard', '2nd Order Fourier', '4th Order Fourier', 'Standard');
-
-fusionChoice = questdlg('Select fusion setup:', 'Fusion Options', 'HSI with WG + POL', 'HSI without WG + POL', 'HSI with WG + POL');
 
 %% Prepare calibration images
 processPolTestData(basePath, selectedType, selectedDay);
@@ -58,24 +56,23 @@ fprintf("Loading Checkerboard images...\n");
 %% Run analysis based on previously obtained results
 switch fusionChoice
     case 'HSI with WG + POL'
-        [DoLP_HSI, AoLP_HSI, wavelengths] = loadHsiAnalysis(hsiMethod, selectedType, mainDatasetName);
+        hsiMethod = questdlg('Select HSI method:', 'Method Selection (HSI)', 'Standard', 'Fourier', 'SPIE Simplified', 'Standard');
+
+        [DoLP_HSI, AoLP_HSI] = loadHsiAnalysis(hsiMethod, selectedType, mainDatasetName);
         [DoLP_POL, AoLP_POL] = loadPolAnalysis(polMethod, mainDatasetName);
-        %[DoLP_HSI_calib, ~, ~, resizeSize] = loadHsiAnalysis(hsiMethod, selectedType,  [selectedType selectedDay 'juncalib' ]);
-        %[DoLP_POL_calib, ~] = loadPolAnalysis(polMethod,[selectedType '_calib_' selectedDay]);
-        
+        [cube, wavelengths] = loadHsiAnalysis('Reflectance', selectedType, mainDatasetName, 'Wavelength_reflectances');
+
         %% Calibration: Get homography from checkerboard
-        %tform = calibrateHsiPolDataFromCheckerboard(DoLP_HSI_calib, DoLP_POL_calib, [selectedType '_calib_' selectedDay], size(DoLP_HSI), size(DoLP_POL), check_calibration);
         tform = calibrateHsiPolDataFromCheckerboard(hsi_rgb_u8, pol_rgb, [selectedType '_calib_' selectedDay], size(DoLP_HSI), size(DoLP_POL), check_calibration);
 
     case 'HSI without WG + POL'
         % Only reflectance fusion possible
-        [reflectance_HSI, ~, wavelengths] = loadHsiAnalysis('Reflectance', selectedType, [selectedType selectedDay 'junwoWGpol']);
+        [reflectance_HSI, ~] = loadHsiAnalysis('Reflectance', selectedType, [selectedType selectedDay 'junwoWGpol'], 'Spatial_reflectances');
         [DoLP_POL, AoLP_POL] = loadPolAnalysis(polMethod, [selectedType '_woWG_' selectedDay]);
-        %[reflectance_HSI_calib, ~,~, resizeSize] = loadHsiAnalysis('Reflectance', selectedType, [selectedType selectedDay 'junwoWGpolcalib' ]);
-        %[DoLP_POL_calib, ~] = loadPolAnalysis(polMethod,[selectedType '_woWG_calib_' selectedDay]);
-      
+        [cube, wavelengths] = loadHsiAnalysis('Reflectance', selectedType, [selectedType selectedDay 'junwoWGpol'], 'Wavelength_reflectances');
+        
+
         %% Calibration: Get homography from checkerboard
-        %tform = calibrateHsiPolDataFromCheckerboard(reflectance_HSI_calib, DoLP_POL_calib, [selectedType '_woWG_calib_' selectedDay], resizeSizeHsi, size(DoLP_POL), check_calibration);
         tform = calibrateHsiPolDataFromCheckerboard(hsi_rgb_u8, pol_rgb, [selectedType '_woWG_calib_' selectedDay], size(reflectance_HSI), size(DoLP_POL), check_calibration);
 end
 
@@ -129,7 +126,7 @@ if exist('DoLP_HSI','var')
     title('Overlay DoLP'); axis image; %caxis([0 1]);
     
     %% AoLP
-    figure; imshowpair(AoLP_HSI, rad2deg(mean(aligned_AoLP_POL,3)), 'falsecolor');
+    figure('Name','HSI POL Fusion - AoLP'); imshowpair(AoLP_HSI, rad2deg(mean(aligned_AoLP_POL,3)), 'falsecolor');
     title('AoLP (HSI) vs AoLP (POL)');
 
     figure('Name','Comparison - AoLP');
@@ -149,25 +146,22 @@ if exist('DoLP_HSI','var')
     AoLP_HSI_smooth = imfilter(AoLP_HSI, fspecial('average', [2 2]));
     
     % Show results
-    fig = figure('Name', ['Smoothed DoLP & AoLP (Grayscale) for ' mainDatasetName]);
-    
-    subplot(1,2,1);
+    figure('Name', ['Smoothed DoLP (Grayscale) for ' mainDatasetName]);
     imshow(mean(DoLP_HSI_smooth,3), [0 1]); colormap(jet); colorbar; axis image; hold on;
     h = imshow(bw_DoLP_smooth, [0 1]);
     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
     title('DoLP (BW + Brightened + Smoothed)');
     
-    subplot(1,2,2);
+    figure('Name', ['Smoothed AoLP (Grayscale) for ' mainDatasetName]);
     imshow(mean(AoLP_HSI_smooth,3), []); colormap(jet); colorbar;axis image; hold on;
     h = imshow(bw_AoLP_smooth, [-90 90]); 
     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
     title('AoLP (BW + Brightened + Smoothed)');
-
 else
     disp('Only POL vs Reflectance fusion available (HSI wo/ WG)');
     
     %% DoLP
-    figure; imshowpair(reflectance_HSI, mean(aligned_DoLP_POL,3), 'falsecolor');
+    figure('Name', 'Reflectance (HSI wo/ WG) vs DoLP (POL)'); imshowpair(reflectance_HSI, mean(aligned_DoLP_POL,3), 'falsecolor');
     title('Reflectance (HSI wo/ WG) vs DoLP (POL)');
 
     reflectance_adj = adapthisteq(mean(reflectance_HSI,3)); %add contrast
@@ -175,16 +169,16 @@ else
     figure('Name','Comparison - Reflectance and DoLP');
     subplot(1,3,1); imshow(reflectance_adj, []); colormap('jet'); colorbar; title('Reflectance (HSI)'); axis image; caxis([0 1]);
     subplot(1,3,2); imshow(mean(aligned_DoLP_POL,3), []); colormap('jet'); colorbar; title('DoLP (POL)'); axis image; caxis([0 1]);
-    subplot(1,3,3); imshowpair(reflectance_adj, mean(aligned_DoLP_POL,3), 'Diff'); title('Reflectance with DoLP Overlay'); axis image; 
+    subplot(1,3,3); imshowpair(reflectance_adj, mean(aligned_DoLP_POL,3), 'Diff'); title('Reflectance + DoLP'); axis image; 
 
     %% AoLP
-    figure; imshowpair(reflectance_HSI, mean(aligned_AoLP_POL,3), 'falsecolor');
+    figure('Name', 'Reflectance (HSI wo/ WG) vs AoLP (POL)'); imshowpair(reflectance_HSI, rad2deg(mean(aligned_AoLP_POL,3)), 'falsecolor');
     title('Reflectance (HSI wo/ WG) vs AoLP (POL)');
 
     figure('Name','Comparison - Reflectance and AoLP');
     subplot(1,3,1); imshow(reflectance_adj, []); colormap('hsv'); colorbar; title('Reflectance (HSI)'); axis image; %caxis([-90 90]);
-    subplot(1,3,2); imshow(mean(aligned_AoLP_POL,3), []); colormap('hsv'); colorbar; title('AoLP (POL)'); axis image; %caxis([-90 90]);
-    subplot(1,3,3); imshowpair(reflectance_adj, mean(aligned_AoLP_POL,3), 'Diff'); title('Reflectance with AoLP Overlay'); axis image; %caxis([-90 90]);
+    subplot(1,3,2); imshow(rad2deg(mean(aligned_AoLP_POL,3)), []); colormap('hsv'); colorbar; title('AoLP (POL)'); axis image; %caxis([-90 90]);
+    subplot(1,3,3); imshowpair(reflectance_adj, rad2deg(mean(aligned_AoLP_POL,3)), 'Diff'); title('Reflectance + AoLP'); axis image; %caxis([-90 90]);
 
 
     %% Smoothed and brightened images
@@ -196,20 +190,101 @@ else
     bw_AoLP_smooth = imfilter(bw_AoLP, fspecial('average', [3 3]));
     
     % Show results
-    fig = figure('Name', ['Smoothed DoLP & AoLP (Grayscale) for ' mainDatasetName]);
-    
-    subplot(1,2,1);
+    figure('Name', ['Reflectance + Smoothed DoLP (Grayscale) for ' mainDatasetName]);
     imshow(reflectance_adj, [0 1]); colormap(jet); colorbar; axis image; hold on;
     h = imshow(bw_DoLP_smooth, [0 1]);
     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
     title('DoLP (BW + Brightened + Smoothed)');
     
-    subplot(1,2,2);
-    imshow(reflectance_adj, [0 1]); colormap(jet); colorbar;axis image; hold on;
-    h = imshow(bw_AoLP_smooth, [-90 90]); 
+    figure('Name', ['Reflectance + Smoothed AoLP (Grayscale) for ' mainDatasetName]);
+    imshow(reflectance_adj); colormap(jet); colorbar; axis image; hold on;
+    h = imshow(bw_AoLP_smooth, [0 1]); 
     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
     title('AoLP (BW + Brightened + Smoothed)');
+
 end
 
 
+%% Selection of points to plot reflectance spectra
 
+% User selection of points
+disp('Select points on the fused image. Press Enter when finished.');
+title('Click points of interest (press Enter when done)');
+
+% User selects points
+[x, y] = getpts(); % returns column, row coordinates
+x = round(x); y = round(y); % Round coordinates to nearest pixel indices
+numPoints = numel(x);
+
+%% Extract reflectance spectra from selected points
+spectra = zeros(numPoints, size(cube,3));
+
+% Plot reflectance spectra for selected points
+figure('Name','Reflectance Spectra of Selected Points'); hold on;
+colors = lines(numel(x));
+
+for i = 1:numPoints
+    spectra(i,:) = squeeze(cube(y(i), x(i), :));
+    plot(wavelengths, spectra(i,:), 'Color', colors(i,:), 'LineWidth', 1.5, 'DisplayName', sprintf('Point (%d,%d)', x(i), y(i))); hold on;
+end
+axis([400 1000 0 1.2]);
+xlabel('\lambda (nm)'); ylabel('Normalized reflectance (-)');
+title('Reflectance Spectra at Selected Points');
+legend('show');
+grid on;
+%% Calculate mean and std reflectance from selected points
+mean_ref = mean(spectra, 1);
+std_ref  = std(spectra, 0, 1);
+
+%% Plot reflectance spectra with std bounds for selected points
+figure('Name','Mean Reflectance of Selected Points'); hold on;
+plot(wavelengths, mean_ref, 'k-', 'LineWidth', 1.5);
+hold on;
+plot(wavelengths, mean_ref + std_ref, 'r--', 'LineWidth', 1);
+plot(wavelengths, mean_ref - std_ref, 'r--', 'LineWidth', 1);
+axis([400 1000 0 1.2]);
+
+xlabel('\lambda (nm)'); ylabel('Normalized reflectance (-)');
+legend('Mean', '+1 std', '-1 std');
+title('Mean Reflectance from Selected Points');
+legend('show');
+grid on;
+
+
+%% User selects 2 ROIs for spectral comparison
+
+reflectances = cell(2,2); % Row1: dataset names, Row2: mean reflectances
+for k = 1:2
+    % Show mean image for ROI selection
+    figure(); imshow(mean(cube,3)); axis image; colormap gray;
+    title(sprintf('Draw ROI for dataset %d', k));
+
+    h_rect = imrect();
+    pos_rect = round(h_rect.getPosition()); %[x y w h]
+    close(gcf);
+
+    % Extract ROI cube
+    I_roi = cube(pos_rect(2):(pos_rect(2)+pos_rect(4)), ...
+                 pos_rect(1):(pos_rect(1)+pos_rect(3)), :);
+
+    % Compute mean and std reflectance in ROI
+    [mean_ref, std_ref] = extract_roi_mean(I_roi);
+
+    % Store reflectance
+    reflectances{1,k} = sprintf('ROI %d', k);
+    reflectances{2,k} = mean_ref(:)'; % 1xN
+
+    % Plot mean reflectance with std bounds
+    figure('Name',['Reflectance Spectrum - ' reflectances{1,k}]);
+    plot(wavelengths, mean_ref, 'b-', 'LineWidth',1.5); hold on;
+    plot(wavelengths, mean_ref + std_ref, 'r--', 'LineWidth',1);
+    plot(wavelengths, mean_ref - std_ref, 'r--', 'LineWidth',1);
+    xlabel('\lambda (nm)'); ylabel('Reflectance (-)');
+    title(sprintf('ROI %d', k)); grid on; axis([400 1000 0 1.2]);
+end
+
+[sid_out, sam_out, sidsam_out, jmsam_out, ns3_out] = compute_spectral_metrics(reflectances{2, 1}, reflectances{2, 2});
+
+% Display Results
+fprintf('\nDatasets: %s and %s\n', reflectances{1, 1}, reflectances{1, 2});
+fprintf('SID: %f\nSAM: %f\nSID-SAM: %f\nJM-SAM: %f\nNS3: %f\n', sid_out, sam_out, sidsam_out, jmsam_out, ns3_out);
