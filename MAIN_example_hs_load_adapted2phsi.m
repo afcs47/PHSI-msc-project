@@ -5,6 +5,7 @@ close all   % Closes all open figure windows
 clear % Clears variables from the workspace
 clc % Clears the Command Window
 
+%%
 plotComparison = true;
 
 % % Get path of current script
@@ -15,14 +16,15 @@ plotComparison = true;
 % addpath(hsiFuncFolder);
 
 addpath(fullfile(fileparts(mfilename('fullpath')), 'hsi')); % Get auxiliary matlab functions previously created for HSI data analysis
+addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
 
 % Select parent directory (where datasets are stored)
 %baseDir = uigetdir('', 'Select Parent Directory Containing Data Folders');
 baseDir = "D:\afili\Transferências\Tese - files\*";
 basePath = fileparts(baseDir); % Get path from directory
 
-outputFolder = uigetdir(pwd, 'Select Output Folder'); % Ask where to save results
-if outputFolder == 0
+outputFolderOG = uigetdir(pwd, 'Select Output Folder'); % Ask where to save results
+if outputFolderOG == 0
     disp('No output folder selected. Exiting.');
     return
 end
@@ -62,7 +64,7 @@ end
 
 
 %% Create a subfolder based on the filename variable to save the data
-datasetFolder = fullfile(outputFolder, [selectedType '_' selectedDay]);
+datasetFolder = fullfile(outputFolderOG, [selectedType '_' selectedDay]);
 % Create the folder if it doesn't exist
 if ~exist(datasetFolder, 'dir')
     mkdir(datasetFolder);
@@ -111,7 +113,8 @@ end
 %% Standard computation of DoLP and AoLP
 % DoLP and AoLP as a spatial function - Standard method
 spatial_reflectances = struct();
-for k = 1:length(options)
+wavelength_reflectances = struct();
+for k = 1:length(options) %for each WG position/angle
     datasetname = options{k, 1};
     fname_selected = options{k, 2};
     fpath = options{k, 3};
@@ -136,11 +139,24 @@ for k = 1:length(options)
 
     % Store results
     spatial_reflectances.(fieldName) = mean_ref;
+    wavelength_reflectances.(fieldName) = single(hsfiltered); % full hs cube - precision switched from double to single to reduce memory consumption
 
 end
 
 %% Problem: the angle arrays have different/incompatible sizes between them
 spatial_reflectances = resize_reflectances(spatial_reflectances);
+wavelength_reflectances = resize_hs_cubes(wavelength_reflectances); % also average across angles to reduce memory occupied
+%cube = getHsCubeAcrossAngles(wavelength_reflectances); 
+
+plot_reflectances_spatially(mean(cube,3), 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'jun (grayscale) - angles 0°, 45°, 90°, 135°' ], outputFolder);
+plot_reflectances_spatially(mean(cube,3), 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'jun - angles 0°, 45°, 90°, 135°'], outputFolder);
+% Find nearest wavelength index
+lambda = 1000; %change value for wavelength channel wanted
+[~, idx] = min(abs(wavelengths - lambda)); 
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - angles 0°, 45°, 90°, 135°', lambda, selectedType, selectedDay), outputFolder);
+%%
+save_analysis_data(struct('Wavelength_reflectances', cube,'Spatial_reflectances', spatial_reflectances, 'wavelengths', wavelengths), 'Standard_Reflectances_Results', selectedType, outputFolder); % Save struct to file - needed for resizeSize in fusion calibration!
+clear Data White Dark HS_calibrated wavelength_reflectances %Clear data to avoid "Out of memory." error
 
 %% Compute DoLP for each pixel
 DoLP_wg = compute_dolp(spatial_reflectances);
@@ -170,8 +186,9 @@ anglesDeg = cellfun(@str2double, filteredFourier.WGpolAngle);
 [sortedAngles, sortIdx] = sort(anglesDeg); % Sort by angle
 filteredFourier = filteredFourier(sortIdx, :); % Apply sorting to table
 
-% Build struct of mean reflectances for each angle
+% Build structs of mean reflectances for each angle and for full hs cube
 mean_ref_struct = struct();
+full_cube_struct = struct();
 
 % Process each angular dataset
 for i = 1:numel(sortedAngles)
@@ -185,14 +202,31 @@ for i = 1:numel(sortedAngles)
     % Compute mean reflectance across all wavelengths
     mean_ref = mean(hsfiltered, 3); % [rows × cols]
 
-    fieldName = sprintf('angle_%d', sortedAngles(i)); % e.g., 'angle_0', 'angle_5', etc.
+    fieldName = sprintf('angle_%d', sortedAngles(i)); % e.g. 'angle_0', 'angle_5', etc.
     mean_ref_struct.(fieldName) = mean_ref;
+    full_cube_struct.(fieldName) = single(hsfiltered); % full hs cube - precision switched from double to single to reduce memory consumption
+
 end
 
 % Resize all reflectance images using existing function
 mean_ref_struct = resize_reflectances(mean_ref_struct);
+cube = resize_hs_cubes(full_cube_struct);
+%cube = getHsCubeAcrossAngles(full_cube_struct); %Average across angles to reduce memory occupied
 
-% Extract angles and reshape for Fourier fitting
+plot_reflectances_spatially(mean(cube,3), 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'jun (grayscale) - all angles' ], outputFolder);
+plot_reflectances_spatially(mean(cube,3), 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'jun - all angles'], outputFolder);
+% Find nearest wavelength index
+lambda = 550;
+[~, idx] = min(abs(wavelengths - lambda)); %change value for wavelength channel wanted
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - all angles', lambda, selectedType, selectedDay), outputFolder);
+
+%%
+save_analysis_data(struct('Wavelength_reflectances', cube, 'Spatial_reflectances', spatial_reflectances, 'wavelengths', wavelengths), 'All_Angles_Reflectances_Results', selectedType, outputFolder); % Save struct to file - needed for resizeSize in fusion calibration!
+
+clear Data White Dark HS_calibrated full_cube_struct %Clear data to avoid "Out of memory." error
+
+
+%% Extract angles and reshape for Fourier fitting
 fields = fieldnames(mean_ref_struct);
 numAngles = numel(fields);
 theta_vals = zeros(numAngles, 1);
@@ -226,7 +260,7 @@ plot_polarization_spatially(DoLP_fourier_img, 'jet', ['Fourier Spatial Distribut
 plot_polarization_spatially(AoLP_fourier_img, 'hsv', ['Fourier Spatial Distribution of AoLP for ' selectedType], outputFolder);
 
 %% Save results
-fourier_data_struct = struct('Fourier_DoLP_map', DoLP_fourier_img, 'Fourier_AoLP_map', AoLP_fourier_img, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelenghts', wavelengths);
+fourier_data_struct = struct('Fourier_DoLP_map', DoLP_fourier_img, 'Fourier_AoLP_map', AoLP_fourier_img, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelengths', wavelengths);
 
 % Save the full struct to file
 save_analysis_data(fourier_data_struct, 'Fourier_Stokes_Results', selectedType, outputFolder);
@@ -241,7 +275,7 @@ plot_polarization_spatially(DoLP, 'jet', ['SPIE Fourier Spatial Distribution of 
 plot_polarization_spatially(AoP_deg, 'hsv', ['SPIE Fourier Spatial Distribution of AoLP for ' selectedType], outputFolder);
 
 %% Save results
-spie_data_struct = struct( 'Spie_Fourier_DoLP_map', DoLP, 'Spie_Fourier_AoLP_map', AoP_deg, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelenghts', wavelengths);
+spie_data_struct = struct( 'Spie_Fourier_DoLP_map', DoLP, 'Spie_Fourier_AoLP_map', AoP_deg, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelengths', wavelengths);
 
 % Save the full struct to file
 save_analysis_data(spie_data_struct, 'SPIE_Fourier_Stokes_Results', selectedType, outputFolder);
@@ -252,12 +286,12 @@ save_analysis_data(spie_data_struct, 'SPIE_Fourier_Stokes_Results', selectedType
 
 if plotComparison; plot_pol_parameters_comparison(S0, S1, S2, DoLP_img, AoP_img, selectedType, 'SPIE Simple', outputFolder); end
 
-%% Display
+% Display
 plot_polarization_spatially(DoLP_img, 'jet', ['SPIE Simplified Fourier Spatial Distribution of DoLP for ' selectedType], outputFolder);
 plot_polarization_spatially(AoP_img, 'hsv', ['SPIE Simplified Fourier Spatial Distribution of AoLP for ' selectedType], outputFolder);
 
 %% Save results
-spie_simple_fourier_data_struct = struct('SpieSimple_Fourier_DoLP_map', DoLP_img, 'SpieSimple_Fourier_AoLP_map', AoP_img, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelenghts', wavelengths);
+spie_simple_fourier_data_struct = struct('SpieSimple_Fourier_DoLP_map', DoLP_img, 'SpieSimple_Fourier_AoLP_map', AoP_img, 'Stokes_S0', S0, 'Stokes_S1', S1, 'Stokes_S2', S2, 'wavelengths', wavelengths);
 
 % Save the full struct to file
 save_analysis_data(spie_simple_fourier_data_struct, 'SpieSimple_Fourier_Stokes_Results', selectedType, outputFolder);
@@ -267,11 +301,85 @@ compare_methods_DoLP(DoLP_wg, 'Standard', DoLP_fourier_img, 'Fourier', DoLP_img,
 
 compare_methods_AoLP_hsi(AoLP_wg, 'Standard', AoLP_fourier_img, 'Fourier', AoP_img, 'SPIE simplified'); 
 
-fprintf('\nStandard: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(DoLP_wg(:)), max(DoLP_wg(:)), (min(AoLP_wg(:))), (max(AoLP_wg(:))))
-fprintf('\nFourier: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(DoLP_fourier_img(:)), max(DoLP_fourier_img(:)), (min(AoLP_fourier_img(:))), (max(AoLP_fourier_img(:))))
-fprintf('\n SPIE Fourier: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(DoLP(:)), max(DoLP(:)), (min(AoP_deg(:))), (max(AoP_deg(:))))
+fprintf('\nStandard: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]', min(DoLP_wg(:)), max(DoLP_wg(:)), (min(AoLP_wg(:))), (max(AoLP_wg(:))))
+fprintf('\nFourier: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]', min(DoLP_fourier_img(:)), max(DoLP_fourier_img(:)), (min(AoLP_fourier_img(:))), (max(AoLP_fourier_img(:))))
+fprintf('\n SPIE Fourier: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]', min(DoLP(:)), max(DoLP(:)), (min(AoP_deg(:))), (max(AoP_deg(:))))
 fprintf('\n SPIE Fourier simplified: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(DoLP_img(:)), max(DoLP_img(:)), (min(AoP_img(:))), (max(AoP_img(:))))
 
+
+
+%% Process calibration dataset (WG @ 0 deg only and wo/ WG), as well as woWG normal dataset
+load('allHsTestData.mat', 'calibHsData', 'woWGpolData');
+
+calib_filtered = calibHsData(strcmp(calibHsData.SampleName, selectedType) & strcmp(calibHsData.Day, selectedDay), :);
+
+% Check both calibration cases exist
+hasWG0 = any(contains(calib_filtered.SampleDetails, 'juncalib'));
+hasNoWG = any(contains(calib_filtered.SampleDetails, 'junwoWGpolcalib'));
+
+if ~hasWG0
+    warning('Calibration missing WG@0° for %s (%s).', selectedType, selectedDay);
 end
+if ~hasNoWG
+    warning('Calibration missing woWGpol dataset for %s (%s).', selectedType, selectedDay);
+end
+
+%% Process calibration with WG @0°
+if hasWG0
+    idx = contains(calib_filtered.SampleDetails, 'juncalib');
+    fname = calib_filtered.FolderName{idx};
+    [mean_ref, wavelengths, ~] = processHsDataset(basePath, fname);
+end
+calibStruct = struct('Spatial_reflectances', mean_ref, 'wavelengths', wavelengths);
+
+%% Process calibration HSI without WG polarizer (woWGpolcalib)
+if hasNoWG
+    idx = contains(calib_filtered.SampleDetails, 'junwoWGpolcalib');
+    fname = calib_filtered.FolderName{idx};
+    [mean_ref, wavelengths, ~] = processHsDataset(basePath, fname);
+end
+noWGcalibStruct = struct('Spatial_reflectances', mean_ref, 'wavelengths', wavelengths);
+
+%% Save calibration results
+save_analysis_data(calibStruct, 'Spatial_Reflectances_Results', [selectedType selectedDay 'juncalib'], fullfile(outputFolderOG, [selectedType selectedDay 'juncalib']));
+save_analysis_data(noWGcalibStruct, 'Spatial_Reflectances_Results', [selectedType selectedDay 'junwoWGpolcalib'], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpolcalib']));
+
+
+%% Extract woWGpol dataset for selected sample/day
+woWG_filtered = woWGpolData(strcmp(woWGpolData.SampleName, selectedType) & strcmp(woWGpolData.Day, selectedDay), :);
+
+if isempty(woWG_filtered)
+    warning('No woWGpolData found for %s (%s).', selectedType, selectedDay);
+end
+
+fname = woWG_filtered.FolderName;
+[mean_ref, wavelengths, hsfiltered] = processHsDataset(basePath, fname);
+woWGStruct = struct('Wavelength_reflectances', hsfiltered, 'Spatial_reflectances', mean_ref, 'wavelengths', wavelengths);
+
+%% Plot reflectance
+plot_reflectances_spatially(mean_ref, 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol (grayscale)' ], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpol']));
+plot_reflectances_spatially(mean_ref, 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol'], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpol']));
+
+%% Save results
+save_analysis_data(woWGStruct, 'All_Angles_Reflectances_Results', [selectedType selectedDay 'junwoWGpol'], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpol']));
+
+
+end
+
+
+
+
+
+%% Auxiliary functions
+function [mean_ref, wavelengths, hsfiltered] = processHsDataset(basePath, folderName)
+    fpath = fullfile(basePath, folderName, 'capture\');
+    [Data, White, Dark, wavelengths] = read_data(fpath, folderName);
+    HS_calib = apply_calibration(Data, White, Dark);
+    hsfiltered = apply_sg_filter(HS_calib);
+    mean_ref = mean(hsfiltered, 3);
+
+end
+
+
 
 

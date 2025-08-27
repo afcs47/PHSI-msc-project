@@ -164,4 +164,5 @@ title('AoLP (2nd Order, BW + Smoothed)');
 %% Save results
 save_polarization_results(outputFolder, filename, DoLP, AoLP, DoLP_2nd, AoLP_2nd, DoLP_4th, AoLP_4th, bw_DoLP, bw_AoLP, bw_DoLP_smooth, bw_AoLP_smooth);
 
+close all;
 end

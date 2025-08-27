@@ -4,6 +4,8 @@ clear;
 clc;
 
 addpath(fullfile(fileparts(mfilename('fullpath')), 'hsi')); % Functions folder
+addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
+
 
 % Ask for folder with saved results
 resultsFolder = uigetdir(pwd, 'Select Folder Containing Saved Analysis Data');
@@ -67,6 +69,21 @@ for i = 1:numel(sampleNames)
     if isfield(data, 'SpieSimple_Fourier_DoLP_map')
         plot_polarization_spatially(data.SpieSimple_Fourier_DoLP_map, 'jet', ['SPIE Simple DoLP - ' name], outputFolder);
         plot_polarization_spatially(data.SpieSimple_Fourier_AoLP_map, 'hsv', ['SPIE Simple AoLP - ' name], outputFolder);
+    end
+
+    % Reflectances
+    if isfield(data, 'Spatial_reflectances')
+        plot_reflectances_spatially(mean(data.Spatial_reflectances,3), 'gray', ['Spatial Reflectances (mean) - ' name], outputFolder);
+        plot_reflectances_spatially(mean(data.Spatial_reflectances,3), 'jet', ['Spatial Reflectances (mean) - ' name], outputFolder);
+    end
+    if isfield(data, 'Wavelength_reflectances')
+        mean_ref = mean(data.Wavelength_reflectances,3);
+        plot_reflectances_spatially(mean_ref, 'gray', ['Normalized Reflectance - ' name ' (grayscale)' ], outputFolder);
+        plot_reflectances_spatially(mean_ref, 'jet', ['Normalized Reflectance - ' name], outputFolder);
+
+        lambda = 550; % example wavelength
+        [~, idx] = min(abs(data.wavelengths - lambda));
+        plot_reflectances_spatially(data.Wavelength_reflectances(:,:,idx), 'jet', sprintf('Reflectance @ %.0f nm - %s', lambda, name), outputFolder);
     end
 end
 
