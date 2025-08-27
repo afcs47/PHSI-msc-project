@@ -1,6 +1,11 @@
-function [output1, output2, wavelengths] = loadHsiAnalysis(method, selectedType, datasetName) % process HSI data according to selected method ('Standard', 'Fourier','SPIE', 'SPIE Simplified' or 'Reflectance'), 
-% returning output1 - DoLP map (for polarization method) or reflectances (for 'Reflectance') and output2 - AoLP map or []
+function [output1, output2] = loadHsiAnalysis(method, selectedType, datasetName, reflectanceMode) % process HSI data according to selected method ('Standard', 'Fourier','SPIE', 'SPIE Simplified' or 'Reflectance'), 
+% returning output1 - DoLP map (for polarization method) or reflectances (for 'Reflectance') and output2 - AoLP map or wavelengths
     
+    % Handle optional input
+    if nargin < 4
+        reflectanceMode = 'Spatial_reflectances'; % default
+    end
+
     %% Branch by method
     switch lower(method)
         case 'standard'
@@ -31,13 +36,21 @@ function [output1, output2, wavelengths] = loadHsiAnalysis(method, selectedType,
             output1 = SpieSimple_Fourier_DoLP_map;
             output2 = SpieSimple_Fourier_AoLP_map;
 
-        case 'reflectance'
-            % Just return the resized reflectances
-            reflectancesFile = dir(fullfile(['hsi results+figures\' datasetName], sprintf('Spatial_Reflectances_Results_%s*.mat', selectedType)));
+        case 'reflectance' % Choose between spatial or wavelength reflectances
+            reflectancesFile = dir(fullfile(['hsi results+figures\' datasetName], sprintf('All_Angles_Reflectances_Results_%s*.mat', selectedType)));
             if isempty(reflectancesFile); error('Error: HSI reflectances file for %s not found! Please run the respective script first or check directories.', datasetName); end
-            load(fullfile(['hsi results+figures\' datasetName], reflectancesFile(end).name), 'Spatial_reflectances', 'wavelengths');
-            output1 = Spatial_reflectances;
-            output2 = [];
+            load(fullfile(['hsi results+figures\' datasetName], reflectancesFile(end).name), 'Wavelength_reflectances', 'Spatial_reflectances', 'wavelengths');
+
+            switch lower(reflectanceMode)
+                case 'spatial_reflectances' % Returns reflectance maps over space
+                    output1 = Spatial_reflectances;
+                    output2 = [];
+                case 'wavelength_reflectances' % Returns reflectances averaged across wavelength dimension
+                    output1 = Wavelength_reflectances;
+                    output2 = wavelengths;
+                otherwise
+                    error('Unknown reflectanceMode: %s. Use ''Spatial_reflectances'' or ''Wavelength_reflectances''.', reflectanceMode);
+            end
         
         otherwise
             error('Error: Unknown HSI method: %s', method);
