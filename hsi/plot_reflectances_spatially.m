@@ -8,5 +8,5 @@ function plot_reflectances_spatially(reflectance_map, cmap, titleStr, outputFold
     caxis([0 1]);
     
     % Save figure
-    saveas(gcf, fullfile(outputFolder, [regexprep(titleStr,'\s+','_') '.png']));
+    export_figure(gcf, regexprep(titleStr,'\s+','_'), outputFolder);
 end
