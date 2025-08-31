@@ -145,7 +145,7 @@ end
 
 %% Problem: the angle arrays have different/incompatible sizes between them
 spatial_reflectances = resize_reflectances(spatial_reflectances);
-wavelength_reflectances = resize_hs_cubes(wavelength_reflectances); % also average across angles to reduce memory occupied
+cube = resize_hs_cubes(wavelength_reflectances); % also average across angles to reduce memory occupied
 %cube = getHsCubeAcrossAngles(wavelength_reflectances); 
 
 plot_reflectances_spatially(mean(cube,3), 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'jun (grayscale) - angles 0°, 45°, 90°, 135°' ], outputFolder);
@@ -154,6 +154,17 @@ plot_reflectances_spatially(mean(cube,3), 'jet', ['Normalized Reflectance for ' 
 lambda = 1000; %change value for wavelength channel wanted
 [~, idx] = min(abs(wavelengths - lambda)); 
 plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - angles 0°, 45°, 90°, 135°', lambda, selectedType, selectedDay), outputFolder);
+lambda = 550; %change value for wavelength channel wanted
+[~, idx] = min(abs(wavelengths - lambda)); 
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - angles 0°, 45°, 90°, 135°', lambda, selectedType, selectedDay), outputFolder);
+lambda = 650; %change value for wavelength channel wanted
+[~, idx] = min(abs(wavelengths - lambda)); 
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - angles 0°, 45°, 90°, 135°', lambda, selectedType, selectedDay), outputFolder);
+lambda = 750; %change value for wavelength channel wanted
+[~, idx] = min(abs(wavelengths - lambda)); 
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - angles 0°, 45°, 90°, 135°', lambda, selectedType, selectedDay), outputFolder);
+%%
+
 %%
 save_analysis_data(struct('Wavelength_reflectances', cube,'Spatial_reflectances', spatial_reflectances, 'wavelengths', wavelengths), 'Standard_Reflectances_Results', selectedType, outputFolder); % Save struct to file - needed for resizeSize in fusion calibration!
 clear Data White Dark HS_calibrated wavelength_reflectances %Clear data to avoid "Out of memory." error
@@ -217,6 +228,18 @@ plot_reflectances_spatially(mean(cube,3), 'gray', ['Normalized Reflectance for '
 plot_reflectances_spatially(mean(cube,3), 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'jun - all angles'], outputFolder);
 % Find nearest wavelength index
 lambda = 550;
+[~, idx] = min(abs(wavelengths - lambda)); %change value for wavelength channel wanted
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - all angles', lambda, selectedType, selectedDay), outputFolder);
+%
+lambda = 650;
+[~, idx] = min(abs(wavelengths - lambda)); %change value for wavelength channel wanted
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - all angles', lambda, selectedType, selectedDay), outputFolder);
+%
+lambda = 750;
+[~, idx] = min(abs(wavelengths - lambda)); %change value for wavelength channel wanted
+plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - all angles', lambda, selectedType, selectedDay), outputFolder);
+%
+lambda = 1000;
 [~, idx] = min(abs(wavelengths - lambda)); %change value for wavelength channel wanted
 plot_reflectances_spatially(cube(:,:, idx), 'gray', sprintf('Normalized Reflectance (%.f nm) for %s%sjun - all angles', lambda, selectedType, selectedDay), outputFolder);
 
@@ -311,7 +334,7 @@ fprintf('\n SPIE Fourier simplified: DoLP [%.2f %.2f]; AoLP [%.2f %.2f]\n', min(
 %% Process calibration dataset (WG @ 0 deg only and wo/ WG), as well as woWG normal dataset
 load('allHsTestData.mat', 'calibHsData', 'woWGpolData');
 
-calib_filtered = calibHsData(strcmp(calibHsData.SampleName, selectedType) & strcmp(calibHsData.Day, selectedDay), :);
+calib_filtered = calibHsData(strcmp(calibHsData.SampleName, selectedType), :);
 
 % Check both calibration cases exist
 hasWG0 = any(contains(calib_filtered.SampleDetails, 'juncalib'));
@@ -321,7 +344,7 @@ if ~hasWG0
     warning('Calibration missing WG@0° for %s (%s).', selectedType, selectedDay);
 end
 if ~hasNoWG
-    warning('Calibration missing woWGpol dataset for %s (%s).', selectedType, selectedDay);
+    warning('Calibration missing woWGpol dataset for %s (%s).', selectedType);
 end
 
 %% Process calibration with WG @0°
@@ -329,27 +352,30 @@ if hasWG0
     idx = contains(calib_filtered.SampleDetails, 'juncalib');
     fname = calib_filtered.FolderName{idx};
     [mean_ref, wavelengths, ~] = processHsDataset(basePath, fname);
+    selectedDay = calib_filtered.Day{idx};
 end
 calibStruct = struct('Spatial_reflectances', mean_ref, 'wavelengths', wavelengths);
+
+% Save calibration results
+save_analysis_data(calibStruct, 'Spatial_Reflectances_Results', [selectedType selectedDay 'juncalib'], fullfile(outputFolderOG, [selectedType selectedDay 'juncalib']));
 
 %% Process calibration HSI without WG polarizer (woWGpolcalib)
 if hasNoWG
     idx = contains(calib_filtered.SampleDetails, 'junwoWGpolcalib');
     fname = calib_filtered.FolderName{idx};
     [mean_ref, wavelengths, ~] = processHsDataset(basePath, fname);
+    selectedDay = calib_filtered.Day{idx};
 end
 noWGcalibStruct = struct('Spatial_reflectances', mean_ref, 'wavelengths', wavelengths);
 
-%% Save calibration results
-save_analysis_data(calibStruct, 'Spatial_Reflectances_Results', [selectedType selectedDay 'juncalib'], fullfile(outputFolderOG, [selectedType selectedDay 'juncalib']));
+% Save calibration results
 save_analysis_data(noWGcalibStruct, 'Spatial_Reflectances_Results', [selectedType selectedDay 'junwoWGpolcalib'], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpolcalib']));
 
-
 %% Extract woWGpol dataset for selected sample/day
-woWG_filtered = woWGpolData(strcmp(woWGpolData.SampleName, selectedType) & strcmp(woWGpolData.Day, selectedDay), :);
-
+woWG_filtered = woWGpolData(strcmp(woWGpolData.SampleName, selectedType), :); %&strcmp(woWGpolData.Day, selectedDay)
+selectedDay = woWG_filtered.Day{1};
 if isempty(woWG_filtered)
-    warning('No woWGpolData found for %s (%s).', selectedType, selectedDay);
+    warning('No woWGpolData found for %s (%s).', selectedType);
 end
 
 fname = woWG_filtered.FolderName;

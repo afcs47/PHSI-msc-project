@@ -11,6 +11,18 @@ addpath(fullfile(fileparts(mfilename('fullpath')), 'hsi'));
 addpath(fullfile(fileparts(mfilename('fullpath')), 'pol'));
 addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
 
+%% Start logging all console output
+% Create output folder
+outputFolder = uigetdir(pwd, 'Select Output Folder'); % Ask where to save results
+if outputFolder == 0
+    disp('No output folder selected. Exiting.');
+    return
+end
+logFile = fullfile(outputFolder, ['runlog_' datestr(now,'yyyy-mm-dd_HHMMSS') '.txt']);
+diary(logFile);
+diary on;
+disp('=== Command Window Log Started ===');
+
 %% Load dataset info
 baseDir  = "D:\afili\Transferências\Tese - files\*";
 basePath = fileparts(baseDir);
@@ -38,11 +50,13 @@ else
 end
 
 mainDatasetName = sprintf('%s_%s', selectedType, selectedDay);
-
+disp(['Dataset: ' mainDatasetName]);
 %% Select methods
 fusionChoice = questdlg('Select fusion setup:', 'Fusion Options', 'HSI with WG + POL', 'HSI without WG + POL', 'HSI with WG + POL');
+disp(['Fusion choice: ' fusionChoice]);
 
 polMethod = questdlg('Select POL method:', 'Method Selection (POL)', 'Standard', '2nd Order Fourier', '4th Order Fourier', 'Standard');
+disp(['POL method: ' polMethod]);
 
 %% Prepare calibration images
 processPolTestData(basePath, selectedType, selectedDay);
@@ -57,6 +71,7 @@ fprintf("Loading Checkerboard images...\n");
 switch fusionChoice
     case 'HSI with WG + POL'
         hsiMethod = questdlg('Select HSI method:', 'Method Selection (HSI)', 'Standard', 'Fourier', 'SPIE Simplified', 'Standard');
+        disp(['HSI method: ' hsiMethod]);
 
         [DoLP_HSI, AoLP_HSI] = loadHsiAnalysis(hsiMethod, selectedType, mainDatasetName);
         [DoLP_POL, AoLP_POL] = loadPolAnalysis(polMethod, mainDatasetName);
@@ -288,3 +303,17 @@ end
 % Display Results
 fprintf('\nDatasets: %s and %s\n', reflectances{1, 1}, reflectances{1, 2});
 fprintf('SID: %f\nSAM: %f\nSID-SAM: %f\nJM-SAM: %f\nNS3: %f\n', sid_out, sam_out, sidsam_out, jmsam_out, ns3_out);
+
+%% Save all opened images and command window logs
+
+disp(['Saved on: ' datestr(now)]);
+disp('=================================');
+diary off;
+
+fprintf('Command window log saved to %s\n', logFile);
+%save images
+if exist('hsiMethod','var')
+    savePHSIresults(outputFolder, mainDatasetName, fusionChoice, polMethod, hsiMethod);
+else
+    savePHSIresults(outputFolder, mainDatasetName, fusionChoice, polMethod);
+end
