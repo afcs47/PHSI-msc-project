@@ -24,10 +24,6 @@ function run_woWGpol_analysis(dataTable, basePath, outputFolderOG) % Handles dat
         spectral_ref_struct.(sprintf('sample_%02d', i)) = hsfiltered;
     end
 
-    %% Plot reflectance
-    plot_reflectances_spatially(mean_ref, 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol (grayscale)' ], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpol']));
-    plot_reflectances_spatially(mean_ref, 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol'], fullfile(outputFolderOG, [selectedType selectedDay 'junwoWGpol']));
-
     %% Save results
     outFolder = fullfile(outputFolderOG, [selectedType '_' selectedDay '_woWG']);
     if ~exist(outFolder, 'dir'); mkdir(outFolder); end
@@ -35,4 +31,9 @@ function run_woWGpol_analysis(dataTable, basePath, outputFolderOG) % Handles dat
     save_analysis_data(struct('Spectral_reflectances', spectral_ref_struct, 'Spatial_reflectances', mean_ref_struct, 'wavelengths', wavelengths), 'woWG_Reflectance_Results', selectedType, outFolder); %reflectances over wavelengths and over spatial coordinates
 
     disp(['woWGpolData analysis complete and saved in: ' outFolder]);
+
+    %% Plot reflectance
+    plot_reflectances_spatially(mean_ref, 'gray', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol (grayscale)' ], outFolder);
+    plot_reflectances_spatially(mean_ref, 'jet', ['Normalized Reflectance for ' selectedType selectedDay 'junwoWGpol'], outFolder);
+    
 end
