@@ -1,5 +1,5 @@
 
-function save_analysis_data(dataStruct, dataType, datasetname, outputDir)
+function save_analysis_data(dataStruct, dataType, datasetname, outputDir) 
     % Ensure output directory exists
     if ~exist(outputDir, 'dir')
         mkdir(outputDir);
