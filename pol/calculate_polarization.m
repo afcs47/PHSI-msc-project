@@ -46,8 +46,8 @@ function [DoLP, AoLP] = calculate_polarization(pol_90, pol_45, pol_135, pol_0, d
         DoLP_channel(valid) = sqrt(S1(valid).^2 + S2(valid).^2) ./ S0(valid);
         DoLP(:,:,c) = DoLP_channel;
         
-        AoLP(:,:,c) = 0.5 * atan2(S2, S1);
+        AoLP(:,:,c) = 0.5 * atan2(S2, S1); %radians
     end
 
-    plot_pol_parameters_comparison(S0, S1, S2, DoLP, AoLP, datasetname, 'Standard', outputFolder);
+    plot_pol_parameters_comparison(S0, S1, S2, DoLP, rad2deg(AoLP), datasetname, 'Standard', outputFolder); 
 end

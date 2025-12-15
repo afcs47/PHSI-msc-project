@@ -33,5 +33,5 @@ function [DoLP, AoLP] = calculate_polarization_fourier_4th(polar_images, dataset
         DoLP(:,:,c) = reshape(dolp, H, W);
         AoLP(:,:,c) = reshape(aolp, H, W);
     end
-        plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, AoLP, datasetname, 'Fourier 4th', outputFolder);
+        plot_pol_parameters_comparison(reshape(a0, H, W), reshape(a2, H, W), reshape(b2, H, W), DoLP, rad2deg(AoLP), datasetname, 'Fourier 4th', outputFolder);
 end
