@@ -6,7 +6,7 @@ function save_analysis_data(dataStruct, dataType, datasetname, outputDir)
     end
 
     % Construct filename with timestamp
-    timestamp = datestr(now, 'yyyymmdd_HHMMSS');
+    timestamp = string(datetime("now","Format","yyyyMMdd_HHmmss"));
     filename = sprintf('%s_%s_%s.mat', dataType, datasetname, timestamp);
     save(fullfile(outputDir, filename), '-struct', 'dataStruct');
 
