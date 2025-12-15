@@ -3,6 +3,7 @@
 clc; clear all; close all;
 
 addpath(fullfile(fileparts(mfilename('fullpath')), 'pol')); % Get auxiliary matlab functions previously created for polarization data analysis
+addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
 
 
 %%  pol_proc()
@@ -76,8 +77,8 @@ imshow(J)
 title("Demosaiced image")
 
 [proc_90, proc_45, proc_135, proc_0] = demosaic_polarization_image(Z, inputFile, outputFolder, show, save); % uses  "Z(1:2:end, 1:2:end)" instead of "blockproc(Z, [2 2], @(block) block.data(1,1))" (used in show_polarization.m)
-
-[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0, filename, outputFolder); % DoLP and AoLP from Standard Stokes parameters computation 
+%%
+[DoLP, AoLP] = calculate_polarization(proc_90, proc_45, proc_135, proc_0, filename, outputFolder); % DoLP and AoLP from Standard Stokes parameters computation. AoLP in radians 
 
 visualize_polarization(DoLP, AoLP, inputFile, outputFolder, angle_min, angle_max, show, show_aolp, save, save_aolp, 'Standard');
 

@@ -32,7 +32,7 @@ else
     selectedDay = "";
 end
 
-fprintf('Detected sample type: %s | day: %s\n', selectedType, selectedDay);
+%fprintf('Detected sample type: %s; day: %s\n', selectedType, selectedDay);
 
 %% Load all .mat analysis files
 
@@ -76,7 +76,7 @@ for i = 1:numel(datasetNames)
     data = analysisData.(fname);
 
     % Identify method
-    method = identifyPolMethodUsed(fname);
+    method = identify_pol_method_used(fname);
 
     % Store only polarization-relevant fields
     entry = struct();
@@ -90,20 +90,28 @@ for i = 1:numel(datasetNames)
 
     % Save only methods with valid polarization data
     if isfield(entry, 'DoLP')
+        % Guarantee existence of S0, S1, S2, S3 fields
+        if ~isfield(entry, 'S0'); entry.S0 = []; end
+        if ~isfield(entry, 'S1'); entry.S1 = []; end
+        if ~isfield(entry, 'S2'); entry.S2 = []; end
+        if ~isfield(entry, 'S3'); entry.S3 = []; end
         methodStructs.(method) = entry;
     end
+
 end
 
 
 %% Full comparison of polarization paremeters per method
 disp('Running detailed polarization-parameter comparisons per method...');
 
+methodNames = fieldnames(methodStructs);
+
 for k = 1:numel(methodNames)
     m = methodNames{k};
     entry = methodStructs.(m);
 
     s0 = entry.S0;  s1 = entry.S1;  s2 = entry.S2;
-    if isfield(entry,'S3'), s3 = entry.S3; else, s3 = []; end
+    %if isfield(entry,'S3'), s3 = entry.S3; else, s3 = []; end
     dolp = entry.DoLP;
     aolp = entry.AoLP;
 
@@ -114,19 +122,19 @@ end
 %% 3-method at a time comparison 
 
 % 1. Standard vs LSQ vs FFT
-plotComparisonFor3Methods(methodStructs, 'Standard', 'Fourier_LSQ', 'Fourier_FFT', outputFolder, sprintf('%s_%s_Std_LSQ_FFT_Comparison', selectedType, selectedDay));
+plot_comparison_for_3_methods(methodStructs, 'Standard', 'Fourier_LSQ', 'Fourier_FFT', outputFolder, sprintf('%s_%s_Std_LSQ_FFT_Comparison', selectedType, selectedDay));
 
 % 2. Standard vs LSQ vs Full LSQ
-plotComparisonFor3Methods(methodStructs, 'Standard', 'Fourier_LSQ', 'Fourier_Full_LSQ', outputFolder, sprintf('%s_%s_Std_LSQ_FullLSQ_Comparison', selectedType, selectedDay));
+plot_comparison_for_3_methods(methodStructs, 'Standard', 'Fourier_LSQ', 'Fourier_Full_LSQ', outputFolder, sprintf('%s_%s_Std_LSQ_FullLSQ_Comparison', selectedType, selectedDay));
 
 % 3. Standard vs FFT vs Full FFT
-plotComparisonFor3Methods(methodStructs, 'Standard', 'Fourier_FFT', 'Fourier_Full_FFT', outputFolder,sprintf('%s_%s_Std_FFT_FullFFT_Comparison', selectedType, selectedDay));
+plot_comparison_for_3_methods(methodStructs, 'Standard', 'Fourier_FFT', 'Fourier_Full_FFT', outputFolder,sprintf('%s_%s_Std_FFT_FullFFT_Comparison', selectedType, selectedDay));
 
 % 4. Standard vs SPIE vs SPIE Simple
-plotComparisonFor3Methods(methodStructs, 'Standard', 'SPIE', 'SPIE_Simple', outputFolder, sprintf('%s_%s_Std_SPIE_SPIESimple_Comparison', selectedType, selectedDay));
+plot_comparison_for_3_methods(methodStructs, 'Standard', 'SPIE', 'SPIE_Simple', outputFolder, sprintf('%s_%s_Std_SPIE_SPIESimple_Comparison', selectedType, selectedDay));
 
 % 5. Standard vs LSQ vs SPIE Simple
-plotComparisonFor3Methods(methodStructs, 'Standard', 'Fourier_LSQ', 'SPIE_Simple', outputFolder, sprintf('%s_%s_Std_LSQ_SPIESimple_Comparison', selectedType, selectedDay));
+plot_comparison_for_3_methods(methodStructs, 'Standard', 'Fourier_LSQ', 'SPIE_Simple', outputFolder, sprintf('%s_%s_Std_LSQ_SPIESimple_Comparison', selectedType, selectedDay));
 
 
 disp('All method comparisons completed successfully.');

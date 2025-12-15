@@ -7,6 +7,8 @@
 % - Always computes reflectances first (needed for phsi setup 3/ fusion approach), then DoLP and AoLP depending on the chosen method
 % - Ensures DoLP and AoLP maps are 2D, not 1D!
 
+%Note: Comment lines 159 and 164 from main script, and 29 and 34 from run_standard_polarization_analysis to reduce computation time by not saving all spectral reflectances
+
 %% Some initial settings
 
 close all   % Closes all open figure windows
@@ -17,7 +19,7 @@ plotComparison = true;
 
 % Get auxiliary matlab functions previously created for HSI data analysis
 addpath(fullfile(fileparts(mfilename('fullpath')), 'hsi'));
-%addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
+addpath(fullfile(fileparts(mfilename('fullpath')), 'phsi'));
 
 %% Select parent directory (where datasets are stored)
 %baseDir = uigetdir('', 'Select Parent Directory Containing Data Folders');
@@ -29,6 +31,10 @@ if outputFolderOG == 0
     disp('No output folder selected. Exiting.');
     return
 end
+
+%% Load all HSI data
+%processHsTestData(baseDir, true); % Confirm dataset separation by displaying the parsed groups
+process_hs_testData(baseDir);
 
 %% User decides which type of dataset to load (Standard or Fourier or no WG)
 datasetChoice = questdlg('Select data type to process:', 'Dataset Selection', 'Standard (WG 0°, 45°, 90°, 135°)', 'Fourier (WG 0–180°)', 'No polarizer (woWGpolData)', 'Fourier (WG 0–180°)'); % standard for a quicker analysis, fourier for other methods and no polarizer for just reflectances computation
@@ -88,7 +94,7 @@ end
 while true
     
     %% Select sample type (and day, when relevant)
-    [filteredData, selectedType, selectedDay] = filterDataBySampleAndDay(dataTable);
+    [filteredData, selectedType, selectedDay] = filter_data_by_sample_and_day(dataTable);
 
     % Save reflectances
     outFolder = fullfile(outputFolderOG, [selectedType '_' selectedDay]);
@@ -114,7 +120,7 @@ while true
         % Compute file age
         fileAgeHours = (now - newestFile.datenum) * 24;
     
-        if fileAgeHours < 24 %one day to consider data as recent
+        if fileAgeHours < 24 %one day to consider data as recent - change 
             disp(['Found reflectance file updated ' num2str(fileAgeHours, '%.2f') ' hours ago.']);
             disp('Loading reflectances instead of recomputing...');
             
@@ -140,6 +146,7 @@ while true
         filteredData = filteredData(sortIdx, :);
     
         mean_ref_struct = struct();
+        spectral_ref_struct = struct();
         for i = 1:numel(sortedAngles)
             fpath = fullfile(basePath, filteredData.FolderName{i}, 'capture\');
             fname = filteredData.FolderName{i};
@@ -150,12 +157,14 @@ while true
             mean_ref = mean(hsfiltered, 3); % Compute mean reflectance over wavelengths
             
             mean_ref_struct.(sprintf('angle_%d', sortedAngles(i))) = mean_ref; % Save result by angle
+            spectral_ref_struct.(sprintf('angle_%d', sortedAngles(i))) = single(hsfiltered); % reduce size
         end
     
         % Resize all reflectance images to match dimensions - avoid the problem of the angle arrays having different/incompatible sizes between them
         mean_ref_struct = resize_reflectances(mean_ref_struct);
+        cube = resize_hs_cubes(spectral_ref_struct); % also average across angles to reduce memory occupied
     
-        save_analysis_data(struct('Spatial_reflectances', mean_ref_struct, 'wavelengths', wavelengths), 'Reflectances', [selectedType '_' selectedDay], outFolder);
+        save_analysis_data(struct('Spectral_reflectances', cube,'Spatial_reflectances', mean_ref_struct, 'wavelengths', wavelengths), 'Reflectances', [selectedType '_' selectedDay], outFolder);
     
         disp('Reflectances computed and saved.');
     end
