@@ -12,4 +12,6 @@ MATLAB code and results for Master's project on Polarization Hyperspectral Imagi
   - 'MAIN_example_hs_load_adapted2phsi_load_figures_november.m' - Loads data previously saved in .mat files and plots the respective DoLP and AoLP figures (avoiding the >1h long computation time).
   - 'MAIN_example_hs_load_adapted2phsi_compare_methods_november.m' - Plots polarization parameters in grayscale for each method used and compares DoLP and AoLP differences between those methods.
 - 'MAIN_pol_analysis.m' - Main script to run **polarization-only analysis** on data from the polarization camera.
-- 'MAIN_phsi_vf.m' - Final script to **fuse HSI and polarization results**, after calibrating the HSI and polarization camera by an homographic transformation matrix.
+- 'MAIN_phsi_december.m' - Final script to **fuse HSI and polarization results**, after calibrating the HSI and polarization camera by an homographic transformation matrix.
+  -'MAIN_phsi_useMatrix_woSpectral_december.m' - Fuses HSI and polarization results, using an homographic transformation matrix previously computed for calibration and skips spectral analysis for specific points or regions available in the main og version.
+
