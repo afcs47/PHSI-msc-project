@@ -1,3 +1,5 @@
+%Code for polarization response of hsi system analysis
+
 %All functions put together + DoLP spatial distribution + AoLP
 
 close all   % Closes all open figure windows
@@ -443,5 +445,6 @@ function plot_polarization_spatially(data1, data2, colormap_name, titleText)
     axis image; % Ensure square pixels
     clim(Lim); % Set a common color scale
 end
+
 
 
