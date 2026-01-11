@@ -73,7 +73,7 @@ while true
         end
         I = I / max(I); % normalize intensity
     
-        %% SECTION 4: Fourier Analysis
+ %% SECTION 4: Fourier Analysis
         
         % Fit a sinusoid: a0 + a2*cos(2x) + b2*sin(2x)
         fitfun = @(b, x) b(1) + b(2)*cosd(2*x) + b(3)*sind(2*x);
@@ -91,7 +91,7 @@ while true
         S3 = NaN;  % cannot be determined from this setup (no info about circular polarization)
     
         % Compute tilt and ellipticity angles
-        tau = 0.5 * atan2(S2, S1);
+        psi = 0.5 * atan2(S2, S1);
         chi = 0.5 * asin(S3 / S0);
     
         % Display results
@@ -101,7 +101,7 @@ while true
         fprintf('S0 = %.4f\nS1 = %.4f\nS2 = %.4f\nS3 = %.4f\n', S0, S1, S2, S3);
         fprintf('\nStokes Parameters (normalized):\n');
         fprintf('S0 = %.4f\nS1 = %.4f\nS2 = %.4f\nS3 = %.4f\n', S0/S0, S1/S0, S2/S0, S3/S0);
-        fprintf('\nTilt angle: \x03c4 = %.2f deg\n', rad2deg(tau));
+        fprintf('\nTilt angle: \x03A8 = %.2f deg\n', rad2deg(psi));
         fprintf('Ellipticity angle: \x03c7 = %.2f deg\n', rad2deg(chi));
 
         %% SECTION 5: Plot Results
@@ -140,7 +140,7 @@ while true
         hold on; plot(xa, ya, 'r-', 'LineWidth', 2);
         dx_a = xa(2) - xa(1); dy_a = ya(2) - ya(1); % distance between choosen points
         a = sqrt(dx_a^2 + dy_a^2);  % length of major axis
-        tau_manual = atan2(dy_a, dx_a);  % angle of major axis with horizontal axis; ]0; pi] -> atan2 [–π, π]
+        psi_manual = atan2(dy_a, dx_a);  % angle of major axis with horizontal axis; ]0; pi] -> atan2 [–π, π]
     
         % Allow user to draw minor axis (b)
         fprintf('Click two points for the minor axis (b)...\n');
@@ -149,17 +149,17 @@ while true
         dx_b = xb(2) - xb(1); dy_b = yb(2) - yb(1); % distance between choosen points
         b = sqrt(dx_b^2 + dy_b^2); % length of minor axis
     
-        epsilon_manual = atan(sqrt(b / a)); % ellipticity angle from axes ratio; ]-pi/4; pi/4] -> atan [–π/2, π/2]
+        chi_manual = atan(sqrt(b / a)); % ellipticity angle from axes ratio; ]-pi/4; pi/4] -> atan [–π/2, π/2]
     
         % Display manual measurement results
         fprintf('\nManual Measurement Results:\n');
         fprintf('a = %.4f, b = %.4f\n', a, b);
-        fprintf('Tilt angle \x03c4 = %.2f°\n', rad2deg(tau_manual));
-        fprintf('Ellipticity angle \x03b5 = %.2f°\n\n', rad2deg(epsilon_manual));
+        fprintf('Tilt angle \x03A8 = %.2f°\n', rad2deg(psi_manual));
+        fprintf('Ellipticity angle \x03c7 = %.2f°\n\n', rad2deg(chi_manual));
     
         
         %S0 = 1; % normalized
-        S3_manual = S0 * sin(2*epsilon_manual);
+        S3_manual = S0 * sin(2*chi_manual);
         
         % Warn if nearly circular
         if abs(a - b)/max(a,b) < 0.05 % 5% tolerance
@@ -171,11 +171,11 @@ while true
     
         % Collect results
         results = [results; table(beta, theta, a0, a2, b2, S0, S1, S2, S3,...
-            rad2deg(tau), rad2deg(chi), ...
-            rad2deg(tau_manual), rad2deg(epsilon_manual),...
+            rad2deg(psi), rad2deg(chi), ...
+            rad2deg(psi_manual), rad2deg(chi_manual), S3_manual,...
             'VariableNames', {'Beta (°)', 'Theta (°)', 'a0', 'a2', 'b2', 'S0', 'S1', 'S2', 'S3', ...
-            'Tau (°)', 'Epsilon (°)',...
-            'Tau_manual  (°)', 'Epsilon_manual (°)'})];
+            'Psi (°)', 'Chi (°)',...
+            'Psi_manual  (°)', 'Chi_manual (°)', 'S3_manual'})];
 
         % Pause and return to menu
         pause(0.5);
