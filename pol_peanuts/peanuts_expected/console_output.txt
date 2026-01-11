@@ -27,7 +27,7 @@ S1 = 1.0000
 S2 = 0.0000
 S3 = NaN
 
-Tilt angle: τ = 0.00 deg
+Tilt angle:  Ψ = 0.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -35,8 +35,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9920, b = 0.0000
-Tilt angle τ = 0.13°
-Ellipticity angle ε = 0.00°
+Tilt angle  Ψ = 0.13°
+Ellipticity angle χ = 0.00°
 
 S3_manual = 0.00
 S3_manual (normalized) = 0.00
@@ -68,7 +68,7 @@ S1 = 0.2500
 S2 = 0.4330
 S3 = NaN
 
-Tilt angle: τ = 30.00 deg
+Tilt angle:  Ψ = 30.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -76,8 +76,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9606, b = 0.6536
-Tilt angle τ = 34.40°
-Ellipticity angle ε = 30.00°
+Tilt angle  Ψ = 34.40°
+Ellipticity angle χ = 30.00°
 
 S3_manual = 1.15
 S3_manual (normalized) = 0.87
@@ -109,7 +109,7 @@ S1 = -0.0000
 S2 = 0.0000
 S3 = NaN
 
-Tilt angle: τ = 55.98 deg
+Tilt angle:  Ψ = 55.98 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -117,8 +117,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9879, b = 1.9638
-Tilt angle τ = -90.17°
-Ellipticity angle ε = 44.82°
+Tilt angle  Ψ = -90.17°
+Ellipticity angle χ = 44.82°
 
 Polarization nearly circular, S3 sign undetermined
 S3_manual = 2.00
@@ -151,7 +151,7 @@ S1 = 0.2500
 S2 = -0.4330
 S3 = NaN
 
-Tilt angle: τ = -30.00 deg
+Tilt angle:  Ψ = -30.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -159,8 +159,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9636, b = 0.6469
-Tilt angle τ = -32.21°
-Ellipticity angle ε = 29.86°
+Tilt angle  Ψ = -32.21°
+Ellipticity angle χ = 29.86°
 
 S3_manual = 1.15
 S3_manual (normalized) = 0.86
@@ -192,7 +192,7 @@ S1 = 1.0000
 S2 = 0.0000
 S3 = NaN
 
-Tilt angle: τ = 0.00 deg
+Tilt angle:  Ψ = 0.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -200,8 +200,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9852, b = 0.0000
-Tilt angle τ = 0.07°
-Ellipticity angle ε = 0.00°
+Tilt angle  Ψ = 0.07°
+Ellipticity angle χ = 0.00°
 
 S3_manual = 0.00
 S3_manual (normalized) = 0.00
@@ -233,7 +233,7 @@ S1 = 0.2500
 S2 = -0.4330
 S3 = NaN
 
-Tilt angle: τ = -30.00 deg
+Tilt angle:  Ψ = -30.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -241,8 +241,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9435, b = 0.6472
-Tilt angle τ = -33.65°
-Ellipticity angle ε = 29.99°
+Tilt angle  Ψ = -33.65°
+Ellipticity angle χ = 29.99°
 
 S3_manual = 1.15
 S3_manual (normalized) = 0.87
@@ -274,7 +274,7 @@ S1 = -0.0000
 S2 = 0.0000
 S3 = NaN
 
-Tilt angle: τ = 55.98 deg
+Tilt angle:  Ψ = 55.98 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -282,8 +282,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9819, b = 1.9759
-Tilt angle τ = -90.17°
-Ellipticity angle ε = 44.96°
+Tilt angle  Ψ = -90.17°
+Ellipticity angle χ = 44.96°
 
 Polarization nearly circular, S3 sign undetermined
 S3_manual = 2.00
@@ -316,7 +316,7 @@ S1 = 0.2500
 S2 = 0.4330
 S3 = NaN
 
-Tilt angle: τ = 30.00 deg
+Tilt angle:  Ψ = 30.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -324,8 +324,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9816, b = 0.6402
-Tilt angle τ = 32.33°
-Ellipticity angle ε = 29.61°
+Tilt angle  Ψ = 32.33°
+Ellipticity angle χ = 29.61°
 
 S3_manual = 1.15
 S3_manual (normalized) = 0.86
@@ -357,7 +357,7 @@ S1 = 1.0000
 S2 = 0.0000
 S3 = NaN
 
-Tilt angle: τ = 0.00 deg
+Tilt angle:  Ψ = 0.00 deg
 Ellipticity angle: χ = NaN deg
 
 Click two points for the major axis (a)...
@@ -365,8 +365,8 @@ Click two points for the minor axis (b)...
 
 Manual Measurement Results:
 a = 1.9920, b = 0.0000
-Tilt angle τ = -0.07°
-Ellipticity angle ε = 0.00°
+Tilt angle  Ψ = -0.07°
+Ellipticity angle χ = 0.00°
 
 S3_manual = 0.00
 S3_manual (normalized) = 0.00
