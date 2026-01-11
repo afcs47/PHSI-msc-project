@@ -1,0 +1,346 @@
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.7544
+a1 = 0.2350
+b1 = 0.0450
+
+Stokes Parameters:
+S0 = 1.5088
+S1 = 0.4700
+S2 = 0.0900
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.3115
+S2 = 0.0596
+S3 = NaN
+
+Tilt angle: Ψ = 5.42 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9541, b = 1.0018
+Tilt angle Ψ = 7.06°
+Ellipticity angle χ = 35.60°
+
+S3_manual = 1.43
+S3_manual (normalized) = 0.95
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.6570
+a1 = 0.0215
+b1 = -0.3156
+
+Stokes Parameters:
+S0 = 1.3140
+S1 = 0.0430
+S2 = -0.6313
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.0327
+S2 = -0.4804
+S3 = NaN
+
+Tilt angle: Ψ = -43.05 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9297, b = 0.6521
+Tilt angle Ψ = -41.39°
+Ellipticity angle χ = 30.17°
+
+S3_manual = 1.14
+S3_manual (normalized) = 0.87
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.5484
+a1 = 0.2179
+b1 = -0.3801
+
+Stokes Parameters:
+S0 = 1.0968
+S1 = 0.4359
+S2 = -0.7601
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.3974
+S2 = -0.6930
+S3 = NaN
+
+Tilt angle: Ψ = -30.08 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9325, b = 0.2074
+Tilt angle Ψ = -31.36°
+Ellipticity angle χ = 18.14°
+
+S3_manual = 0.65
+S3_manual (normalized) = 0.59
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.5124
+a1 = 0.3880
+b1 = -0.2649
+
+Stokes Parameters:
+S0 = 1.0248
+S1 = 0.7760
+S2 = -0.5299
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.7572
+S2 = -0.5171
+S3 = NaN
+
+Tilt angle: Ψ = -17.16 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9543, b = 0.0850
+Tilt angle Ψ = -20.18°
+Ellipticity angle χ = 11.78°
+
+S3_manual = 0.41
+S3_manual (normalized) = 0.40
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.6702
+a1 = 0.2669
+b1 = 0.1054
+
+Stokes Parameters:
+S0 = 1.3404
+S1 = 0.5338
+S2 = 0.2108
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.3982
+S2 = 0.1572
+S3 = NaN
+
+Tilt angle: Ψ = 10.77 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.8967, b = 0.7370
+Tilt angle Ψ = 15.47°
+Ellipticity angle χ = 31.94°
+
+S3_manual = 1.20
+S3_manual (normalized) = 0.90
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.5200
+a1 = 0.3707
+b1 = -0.2953
+
+Stokes Parameters:
+S0 = 1.0401
+S1 = 0.7414
+S2 = -0.5905
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.7128
+S2 = -0.5678
+S3 = NaN
+
+Tilt angle: Ψ = -19.27 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9617, b = 0.0827
+Tilt angle Ψ = -19.67°
+Ellipticity angle χ = 11.60°
+
+S3_manual = 0.41
+S3_manual (normalized) = 0.39
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.5804
+a1 = 0.0903
+b1 = -0.4030
+
+Stokes Parameters:
+S0 = 1.1608
+S1 = 0.1805
+S2 = -0.8061
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.1555
+S2 = -0.6944
+S3 = NaN
+
+Tilt angle: Ψ = -38.69 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9600, b = 0.3219
+Tilt angle Ψ = -38.58°
+Ellipticity angle χ = 22.06°
+
+S3_manual = 0.81
+S3_manual (normalized) = 0.70
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.5502
+a1 = 0.1525
+b1 = -0.4196
+
+Stokes Parameters:
+S0 = 1.1005
+S1 = 0.3050
+S2 = -0.8393
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = 0.2772
+S2 = -0.7626
+S3 = NaN
+
+Tilt angle: Ψ = -35.01 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9537, b = 0.2141
+Tilt angle Ψ = -35.87°
+Ellipticity angle χ = 18.32°
+
+S3_manual = 0.66
+S3_manual (normalized) = 0.60
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Fourier Coefficients:
+a0 = 0.6685
+a1 = -0.0558
+b1 = -0.3046
+
+Stokes Parameters:
+S0 = 1.3369
+S1 = -0.1117
+S2 = -0.6092
+S3 = NaN
+
+Stokes Parameters (normalized):
+S0 = 1.0000
+S1 = -0.0835
+S2 = -0.4557
+S3 = NaN
+
+Tilt angle: Ψ = -50.19 deg
+Ellipticity angle: χ = NaN deg
+
+Click two points for the major axis (a)...
+Click two points for the minor axis (b)...
+
+Manual Measurement Results:
+a = 1.9284, b = 0.6780
+Tilt angle Ψ = -51.46°
+Ellipticity angle χ = 30.67°
+
+S3_manual = 1.17
+S3_manual (normalized) = 0.88
+
+Warning: Error analyzing set 10: Function value and YDATA sizes are not equal. 
+> In polarization_peanuts_experiment_experimental_results_jan (line 18) 
+Results saved.
+>> 
