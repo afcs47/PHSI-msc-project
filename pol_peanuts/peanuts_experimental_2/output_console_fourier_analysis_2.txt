@@ -1,0 +1,311 @@
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9920±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.0000±0.0283
+
+
+--- Set 1 | θ = 0° ---
+Expected values: a0=0.5000, a2=0.5000, b2=0.0000
+LSQ 2nd order Fit wo/ errors: a0=0.4957, a2=0.5122, b2=-0.0194
+LSQ 2nd order Fit: a0=0.4859±0.0155, a2=0.4863±0.0156, b2=-0.0993±0.0065
+LSQ 4th order Fit: a0=0.4959, a2=0.5121, b2=0.0171, R²=0.9947
+FFT Coefficients: a0=0.5162, a2=0.4957, b2=-0.1470, a4=-0.0126, b4=0.0079
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=0.972±0.031, S1=0.973±0.031, S2=-0.199±0.013
+Ψ (Fourier) = -5.77° ± 0.41°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = 0.00° ± 0.81°
+χ (Manual)  = 0.00° ± Inf°
+S3 (Manual)  = 0.00° ± Inf°
+
+DoLP = 1.0214 ± 0.0454
+AoLP = -5.7712° ± 0.4076°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9711±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.6150±0.0283
+
+
+--- Set 2 | θ = 30° ---
+Expected values: a0=0.6667, a2=0.1667, b2=0.2887
+LSQ 2nd order Fit wo/ errors: a0=0.6513, a2=0.2670, b2=0.2692
+LSQ 2nd order Fit: a0=0.6435±0.0096, a2=0.2565±0.0131, b2=0.2645±0.0134
+LSQ 4th order Fit: a0=0.6460, a2=0.2598, b2=0.0014, R²=0.9714
+FFT Coefficients: a0=0.6619, a2=0.3260, b2=0.1851, a4=-0.0018, b4=-0.0075
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.287±0.019, S1=0.513±0.026, S2=0.529±0.027
+Ψ (Fourier) = 22.94° ± 1.03°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = 22.46° ± 0.82°
+χ (Manual)  = 29.19° ± 1.34°
+S3 (Manual)  = 1.10° ± 0.04°
+
+DoLP = 0.5726 ± 0.0223
+AoLP = 22.9416° ± 1.0286°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.7177±0.0283
+Click two points for minor axis
+Minor axis estimate: b=1.9325±0.0283
+
+
+--- Set 3 | θ = 45° ---
+Expected values: a0=1.0000, a2=-0.0000, b2=0.0000
+LSQ 2nd order Fit wo/ errors: a0=0.9170, a2=0.0558, b2=0.0388
+LSQ 2nd order Fit: a0=0.9170±0.0044, a2=0.0558±0.0061, b2=0.0388±0.0064
+LSQ 4th order Fit: a0=0.9170, a2=0.0557, b2=0.0011, R²=0.9192
+FFT Coefficients: a0=0.9193, a2=0.0625, b2=0.0206, a4=-0.0093, b4=-0.0150
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.834±0.009, S1=0.112±0.012, S2=0.078±0.013
+Ψ (Fourier) = 17.39° ± 2.65°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -90.00° ± 0.94°
+χ (Manual)  = 46.69° ± 0.85°
+S3 (Manual)  = 1.83° ± 0.01°
+
+DoLP = 0.0741 ± 0.0068
+AoLP = 17.3938° ± 2.6539°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9758±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.7060±0.0283
+
+
+--- Set 4 | θ = 60° ---
+Expected values: a0=0.6667, a2=0.1667, b2=-0.2887
+LSQ 2nd order Fit wo/ errors: a0=0.6631, a2=0.1868, b2=-0.2438
+LSQ 2nd order Fit: a0=0.6569±0.0098, a2=0.1789±0.0130, b2=-0.2360±0.0145
+LSQ 4th order Fit: a0=0.6532, a2=0.1753, b2=0.0062, R²=0.9554
+FFT Coefficients: a0=0.6706, a2=0.1224, b2=-0.2741, a4=0.0029, b4=0.0204
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.314±0.020, S1=0.358±0.026, S2=-0.472±0.029
+Ψ (Fourier) = -26.42° ± 1.31°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -29.98° ± 0.82°
+χ (Manual)  = 30.87° ± 1.24°
+S3 (Manual)  = 1.16° ± 0.03°
+
+DoLP = 0.4509 ± 0.0223
+AoLP = -26.4231° ± 1.3138°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9748±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.0000±0.0283
+
+
+--- Set 5 | θ = 90° ---
+Expected values: a0=0.5000, a2=0.5000, b2=0.0000
+LSQ 2nd order Fit wo/ errors: a0=0.4813, a2=0.4973, b2=-0.0354
+LSQ 2nd order Fit: a0=0.3645±0.0313, a2=0.3768±0.0339, b2=-0.0429±0.0089
+LSQ 4th order Fit: a0=0.4579, a2=0.5409, b2=0.0810, R²=0.9704
+FFT Coefficients: a0=0.5012, a2=0.4762, b2=-0.1581, a4=-0.0217, b4=-0.0018
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=0.729±0.063, S1=0.754±0.068, S2=-0.086±0.018
+Ψ (Fourier) = -3.25° ± 0.73°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -0.53° ± 0.82°
+χ (Manual)  = 0.00° ± Inf°
+S3 (Manual)  = 0.00° ± Inf°
+
+DoLP = 1.0405 ± 0.1286
+AoLP = -3.2498° ± 0.7267°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9290±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.6784±0.0283
+
+
+--- Set 6 | θ = -30° ---
+Expected values: a0=0.6667, a2=0.1667, b2=-0.2887
+LSQ 2nd order Fit wo/ errors: a0=0.6410, a2=0.0728, b2=-0.3056
+LSQ 2nd order Fit: a0=0.6337±0.0080, a2=0.0700±0.0102, b2=-0.2927±0.0123
+LSQ 4th order Fit: a0=0.6324, a2=0.0694, b2=0.0061, R²=0.9686
+FFT Coefficients: a0=0.6439, a2=-0.0051, b2=-0.3033, a4=0.0002, b4=0.0181
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.267±0.016, S1=0.140±0.020, S2=-0.585±0.025
+Ψ (Fourier) = -38.28° ± 0.98°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -40.91° ± 0.84°
+χ (Manual)  = 30.67° ± 1.27°
+S3 (Manual)  = 1.11° ± 0.03°
+
+DoLP = 0.4749 ± 0.0201
+AoLP = -38.2777° ± 0.9796°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.8310±0.0283
+Click two points for minor axis
+Minor axis estimate: b=1.9825±0.0283
+
+
+--- Set 7 | θ = -45° ---
+Expected values: a0=1.0000, a2=-0.0000, b2=0.0000
+LSQ 2nd order Fit wo/ errors: a0=0.9648, a2=0.0349, b2=0.0247
+LSQ 2nd order Fit: a0=0.9648±0.0032, a2=0.0349±0.0044, b2=0.0247±0.0046
+LSQ 4th order Fit: a0=0.9648, a2=0.0350, b2=-0.0021, R²=0.8755
+FFT Coefficients: a0=0.9662, a2=0.0385, b2=0.0147, a4=-0.0068, b4=-0.0083
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.930±0.006, S1=0.070±0.009, S2=0.049±0.009
+Ψ (Fourier) = 17.65° ± 3.01°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -90.14° ± 0.89°
+χ (Manual)  = 46.14° ± 0.83°
+S3 (Manual)  = 1.93° ± 0.01°
+
+DoLP = 0.0443 ± 0.0046
+AoLP = 17.6450° ± 3.0147°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9641±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.5956±0.0283
+
+
+--- Set 8 | θ = -60° ---
+Expected values: a0=0.6667, a2=0.1667, b2=0.2887
+LSQ 2nd order Fit wo/ errors: a0=0.6302, a2=0.2866, b2=0.2413
+LSQ 2nd order Fit: a0=0.6209±0.0079, a2=0.2743±0.0111, b2=0.2328±0.0108
+LSQ 4th order Fit: a0=0.6260, a2=0.2819, b2=0.0080, R²=0.9840
+FFT Coefficients: a0=0.6417, a2=0.3368, b2=0.1544, a4=0.0035, b4=0.0024
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=1.242±0.016, S1=0.549±0.022, S2=0.466±0.022
+Ψ (Fourier) = 20.16° ± 0.87°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = 21.36° ± 0.83°
+χ (Manual)  = 28.84° ± 1.36°
+S3 (Manual)  = 1.05° ± 0.03°
+
+DoLP = 0.5795 ± 0.0191
+AoLP = 20.1641° ± 0.8697°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9112±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.0000±0.0283
+
+
+--- Set 9 | θ = 180° ---
+Expected values: a0=0.5000, a2=0.5000, b2=0.0000
+LSQ 2nd order Fit wo/ errors: a0=0.4506, a2=0.4863, b2=-0.1325
+LSQ 2nd order Fit: a0=0.3531±0.0281, a2=0.3471±0.0272, b2=-0.1285±0.0159
+LSQ 4th order Fit: a0=0.4406, a2=0.5103, b2=0.0706, R²=0.9881
+FFT Coefficients: a0=0.4701, a2=0.4439, b2=-0.2455, a4=0.0130, b4=-0.0100
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=0.706±0.056, S1=0.694±0.054, S2=-0.257±0.032
+Ψ (Fourier) = -10.16° ± 1.37°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -7.08° ± 0.85°
+χ (Manual)  = 0.00° ± Inf°
+S3 (Manual)  = 0.00° ± Inf°
+
+DoLP = 1.0483 ± 0.1116
+AoLP = -10.1610° ± 1.3689°
+
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the value of the optimality tolerance.
+
+<stopping criteria details>
+Click two points for major axis
+Major axis estimate: a=1.9703±0.0283
+Click two points for minor axis
+Minor axis estimate: b=0.0000±0.0283
+
+
+--- Set 10 | θ = 270° ---
+LSQ 2nd order Fit wo/ errors: a0=0.4676, a2=0.5010, b2=-0.0813
+LSQ 2nd order Fit: a0=0.3591±0.0296, a2=0.3717±0.0321, b2=-0.0601±0.0086
+LSQ 4th order Fit: a0=0.4502, a2=0.5347, b2=0.0827, R²=0.9855
+FFT Coefficients: a0=0.4876, a2=0.4696, b2=-0.2026, a4=-0.0010, b4=-0.0108
+
+For LSQ 2nd order Fit coefficients
+Stokes: S0=0.718±0.059, S1=0.743±0.064, S2=-0.120±0.017
+Ψ (Fourier) = -4.59° ± 0.76°
+χ (Fourier) = NaN° ± NaN°
+Ψ (Manual)  = -2.78° ± 0.82°
+χ (Manual)  = 0.00° ± Inf°
+S3 (Manual)  = 0.00° ± Inf°
+
+DoLP = 1.0485 ± 0.1236
+AoLP = -4.5913° ± 0.7574°
+
+Results saved.
+>> 
