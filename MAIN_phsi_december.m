@@ -351,14 +351,14 @@ else
     % Side-by-side comparison
     figure('Name','Comparison - DoLP (Grayscale)');
     montage({Reflec_HSI_rgb, DoLP_POL_rgb}, 'Size', [1 2]);
-    title("HSI vs POL DoLP (Grayscale)");
+    title("HSI Reflectance vs POL DoLP (Grayscale)");
     
     % Grayscale fusion 
     figure('Name','Fused DoLP (Grayscale)');
     imshow(Reflec_HSI_rgb); hold on;
     h = imshow(DoLP_POL_rgb);
     set(h, 'AlphaData', 0.5);   % transparency
-    title('DoLP HSI + DoLP POL fused (Grayscale)');
+    title('HSI Reflectance + POL DoLP fused (Grayscale)');
     axis image;
 
     %% Convert DoLP maps to RGB using same colormap + limits
@@ -379,7 +379,7 @@ else
     h = imshow(DoLP_POL_rgb, [0 1]);
     transpValue = 0.35;
     set(h, 'AlphaData', transpValue); % adjust transparency
-    title(sprintf('HSI Reflectance + DoLP POL fused (consistent colormap, transparency @ %g)',transpValue));
+    title(sprintf('HSI Reflectance + POL DoLP fused (consistent colormap, transparency @ %g)',transpValue));
     axis image;
     hold on;
 

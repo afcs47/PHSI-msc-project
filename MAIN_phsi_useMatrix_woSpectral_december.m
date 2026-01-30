@@ -164,10 +164,10 @@ if exist('DoLP_HSI','var')
     %tform.T(3,2) = tform.T(3,2) + offsetY; % shift in Y
 
     aligned_DoLP_POL = imwarp(DoLP_POL, tform, 'OutputView', imref2d(size(DoLP_HSI)));
-    aligned_AoLP_POL = imwarp(AoLP_POL, tform, 'OutputView', imref2d(size(AoLP_HSI))); % in rad
+    %aligned_AoLP_POL = imwarp(AoLP_POL, tform, 'OutputView', imref2d(size(AoLP_HSI))); % in rad
 else
     aligned_DoLP_POL = imwarp(DoLP_POL, tform, 'OutputView', imref2d(size(reflectance_HSI)));
-    aligned_AoLP_POL = imwarp(AoLP_POL, tform, 'OutputView', imref2d(size(reflectance_HSI))); % in rad
+    %aligned_AoLP_POL = imwarp(AoLP_POL, tform, 'OutputView', imref2d(size(reflectance_HSI))); % in rad
 end
 
 
@@ -179,14 +179,14 @@ if exist('DoLP_HSI','var')
 
     % Apply the additional Y-shift to the already warped POL data
     aligned_DoLP_POL = imtranslate(aligned_DoLP_POL, [0 offsetY]);
-    aligned_AoLP_POL = imtranslate(aligned_AoLP_POL, [0 offsetY]);
+    %aligned_AoLP_POL = imtranslate(aligned_AoLP_POL, [0 offsetY]);
 else
     disp('Estimating offsetY between Reflectance (HSI) and warped DoLP (POL)...');
     offsetY = estimate_offsetY(reflectance_HSI, aligned_DoLP_POL);
     fprintf('User-estimated offsetY = %d pixels\n', offsetY);
 
     aligned_DoLP_POL = imtranslate(aligned_DoLP_POL, [0 offsetY]);
-    aligned_AoLP_POL = imtranslate(aligned_AoLP_POL, [0 offsetY]);
+    %aligned_AoLP_POL = imtranslate(aligned_AoLP_POL, [0 offsetY]);
 end
 
 
@@ -287,7 +287,7 @@ if exist('DoLP_HSI','var')
     h = imshow(DoLP_POL_rgb);
     transpValue = 0.5;
     set(h, 'AlphaData', transpValue); % adjust transparency
-    title(sprintf('DoLP HSI + POL fused (consistent colormap, transparency @ %g)',transpValue));
+    title(sprintf('DoLP HSI + DoLP POL fused (consistent colormap, transparency @ %g)',transpValue));
     axis image;
     hold on;
 
@@ -312,8 +312,10 @@ else
 
 
     %% DoLP
-    reflectance_adj = adapthisteq(reflectance_HSI); %adjust contrast to reflectance plot
+    %reflectance_adj = adapthisteq(reflectance_HSI); %adjust contrast to reflectance plot
     
+    reflectance_adj = reflectance_HSI;
+
     figure('Name','Comparison - Reflectance and DoLP');
     %subplot(1,3,1); imshow(mean(reflectance_HSI,3), []); colormap('jet'); colorbar; title('Reflectance (HSI)'); axis image; caxis([0 1]); %low contrast 
     subplot(1,2,1); imshow(reflectance_adj, []); colormap('jet'); colorbar; title('Reflectance (HSI)'); axis image; caxis([0 1]);
@@ -328,54 +330,69 @@ else
     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
     title('Overlay Reflectance and DoLP'); axis image; %caxis([0 1]);
 
-    %% Brightened images
-    bw_DoLP = uint8(255 * mat2gray(aligned_DoLP_POL, [prctile(aligned_DoLP_POL(:), 1), prctile(aligned_DoLP_POL(:), 99)]));
-    %bw_DoLP_smooth = imfilter(bw_DoLP, fspecial('average', [2 2])); % the larger the kernel, the blurrier the image
-    % Show results
-    figure('Name', ['Reflectance + DoLP for ' mainDatasetName]);
-    imshow(mean(reflectance_adj,3), [0 1]); colormap(jet); colorbar; axis image; hold on;
-    h = imshow(bw_DoLP, [0 1]);
-    set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
-    title('Reflectance and DoLP (Brightened)');
-
-    %%
-    refl_rgb = repmat(reflectance_adj, 1, 1, 3);  % convert grayscale to RGB
-    bw_DoLP = bw_DoLP(:,:,1);   % ensure single plane
-    dolp_rgb = repmat(bw_DoLP(:,:,1), 1, 1, 3); % grayscale to RGB
-
-    figure('Name', ['Reflectance + DoLP (Grayscale) for ' mainDatasetName]);
-    imshow(mean(refl_rgb,3), [0 1]); colormap("gray"); colorbar; axis image; hold on;
-    h = imshow(dolp_rgb, [0 1]);
-    set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
-    title('Reflectance and DoLP (BW + Brightened)');
-
-    %% Convert DoLP maps to GRAYSCALE (not jet)
-    clims = [0 1];
-    
-    % Reduce to 2D DoLP maps
-    Reflec_HSI_gray = mat2gray(reflectance_HSI, clims);
-    DoLP_POL_gray = mat2gray(mean(aligned_DoLP_POL, 3), clims);
-    
-    % Convert to grayscale RGB (MxNx3)
-    Reflec_HSI_rgb = repmat(Reflec_HSI_gray, 1, 1, 3);
-    DoLP_POL_rgb = repmat(DoLP_POL_gray, 1, 1, 3);
-    
-    % Side-by-side comparison
-    figure('Name','Comparison - DoLP (Grayscale)');
-    montage({Reflec_HSI_rgb, DoLP_POL_rgb}, 'Size', [1 2]);
-    title("HSI vs POL DoLP (Grayscale)");
-    
-    % Grayscale fusion 
-    figure('Name','Fused DoLP (Grayscale)');
-    imshow(Reflec_HSI_rgb); hold on;
-    h = imshow(DoLP_POL_rgb);
-    set(h, 'AlphaData', 0.5);   % transparency
-    title('DoLP HSI + DoLP POL fused (Grayscale)');
-    axis image;
+% 
+%     %same side-by-side comparison but with larger area for each plot
+%     cmap = jet(256);% choose the same colormap
+%     clims = [0 1]; % consistent color range for both modalities
+%     reflect_HSI_rgb = ind2rgb(gray2ind(mat2gray(reflectance_adj, clims), 256), cmap);
+%     %aligned_DoLP_POL = mean(aligned_DoLP_POL, 3);
+%     DoLP_POL_rgb = ind2rgb(gray2ind(mat2gray(aligned_DoLP_POL, clims), 256), cmap);
+%     figure('Name','Comparison - Reflectance and DoLP 2');
+%     montage({reflect_HSI_rgb, DoLP_POL_rgb}, 'Size', [1 2]); %side-by-side without colorbar
+%     title("HSI Reflectance vs POL DoLP (same color scale)");
+% 
+%     
+% 
+%     %% Brightened images
+%     bw_DoLP = uint8(255 * mat2gray(aligned_DoLP_POL, [prctile(aligned_DoLP_POL(:), 1), prctile(aligned_DoLP_POL(:), 99)]));
+%     %bw_DoLP_smooth = imfilter(bw_DoLP, fspecial('average', [2 2])); % the larger the kernel, the blurrier the image
+%     % Show results
+%     figure('Name', ['Reflectance + DoLP for ' mainDatasetName]);
+%     imshow(mean(reflectance_adj,3), [0 1]); colormap(jet); colorbar; axis image; hold on;
+%     h = imshow(bw_DoLP, [0 1]);
+%     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
+%     title('Reflectance and DoLP (Brightened)');
+% 
+%     %%
+%     refl_rgb = repmat(reflectance_adj, 1, 1, 3);  % convert grayscale to RGB
+%     bw_DoLP = bw_DoLP(:,:,1);   % ensure single plane
+%     dolp_rgb = repmat(bw_DoLP(:,:,1), 1, 1, 3); % grayscale to RGB
+% 
+%     figure('Name', ['Reflectance + DoLP (Grayscale) for ' mainDatasetName]);
+%     imshow(mean(refl_rgb,3), [0 1]); colormap("gray"); colorbar; axis image; hold on;
+%     h = imshow(dolp_rgb, [0 1]);
+%     set(h, 'AlphaData', 0.5);  % Semi-transparent overlay
+%     title('Reflectance and DoLP (BW + Brightened)');
+% 
+%     %% Convert DoLP maps to GRAYSCALE (not jet)
+%     clims = [0 1];
+%     
+%     % Reduce to 2D DoLP maps
+%     Reflec_HSI_gray = mat2gray(reflectance_HSI, clims);
+%     DoLP_POL_gray = mat2gray(mean(aligned_DoLP_POL, 3), clims);
+%     
+%     % Convert to grayscale RGB (MxNx3)
+%     Reflec_HSI_rgb = repmat(Reflec_HSI_gray, 1, 1, 3);
+%     DoLP_POL_rgb = repmat(DoLP_POL_gray, 1, 1, 3);
+%     
+%     % Side-by-side comparison
+%     figure('Name','Comparison - DoLP (Grayscale)');
+%     montage({Reflec_HSI_rgb, DoLP_POL_rgb}, 'Size', [1 2]);
+%     title("HSI Reflectance vs POL DoLP (Grayscale)");
+%     
+%     % Grayscale fusion 
+%     figure('Name','Fused DoLP (Grayscale)');
+%     imshow(Reflec_HSI_rgb); hold on;
+%     h = imshow(DoLP_POL_rgb);
+%     set(h, 'AlphaData', 0.5);   % transparency
+%     title('HSI Reflectance + POL DoLP fused (Grayscale)');
+%     axis image;
 
     %% Convert DoLP maps to RGB using same colormap + limits
     cmap = jet(256);% choose the same colormap
     clims = [0 1]; % consistent color range for both modalities
+
+    reflectance_adj = adapthisteq(reflectance_HSI); %add contrast
     reflectance_adj = mean(reflectance_adj, 3);
     aligned_DoLP_POL = mean(aligned_DoLP_POL, 3);
 
@@ -391,7 +408,7 @@ else
     h = imshow(DoLP_POL_rgb, [0 1]);
     transpValue = 0.35;
     set(h, 'AlphaData', transpValue); % adjust transparency
-    title(sprintf('HSI Reflectance + DoLP POL fused (consistent colormap, transparency @ %g)',transpValue));
+    title(sprintf('HSI Reflectance + POL DoLP fused (consistent colormap, transparency @ %g)',transpValue));
     axis image;
     hold on;
 
